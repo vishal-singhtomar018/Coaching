@@ -2,7 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const Student = require("../models/StudentEnrollment");
 const Tutor = require("../models/TutorEnrollment");
-const contact = require("../models/contact");
+const contact = require("../models/Contact");
 
 exports.loginPage = (req, res) => {
   res.render("auth/login");
@@ -190,11 +190,10 @@ exports.deleteTutor = async (req, res) => {
   }
 };
 
-const Contact = require("../models/contact");
 
 exports.deleteMessage = async (req, res) => {
   try {
-    await Contact.findByIdAndDelete(req.params.id);
+    await contact.findByIdAndDelete(req.params.id);
 
     res.redirect("/admin/messages");
   } catch (err) {

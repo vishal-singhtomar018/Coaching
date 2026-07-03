@@ -8,7 +8,7 @@ const mentorRoutes = require("./routes/mentorRoutes");
 const session = require("express-session");
 const User = require("./models/User");
 const { MongoStore } = require("connect-mongo");
-console.log(MongoStore);
+
 
 connectDB();
 const app = express();
