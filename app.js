@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const path = require("path");
 const connectDB = require("./config/db");
@@ -8,6 +7,8 @@ const connectDB = require("./config/db");
 const mentorRoutes = require("./routes/mentorRoutes");
 const session = require("express-session");
 const User = require("./models/User");
+const { MongoStore } = require("connect-mongo");
+console.log(MongoStore);
 
 connectDB();
 const app = express();
@@ -33,6 +34,9 @@ app.use(
     secret: process.env.SESSION_SECRET || "coaching-secret-key",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+    }),
 
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
@@ -40,7 +44,6 @@ app.use(
     },
   }),
 );
-
 
 app.use(async (req, res, next) => {
   res.locals.user = req.session.user || null;

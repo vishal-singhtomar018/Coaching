@@ -2,6 +2,7 @@
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cloudinary": "^1.41.3",
+    "connect-mongo": "^6.0.0",
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
@@ -12,7 +13,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^9.0.1"
   },
-    "scripts": {
-      "start": "node app.js"
-    }
+  "scripts": {
+    "start": "node app.js"
+  }
 }
