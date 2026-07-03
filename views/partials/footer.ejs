@@ -1,0 +1,185 @@
+<footer class="bg-[#101114] text-white">
+
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20">
+
+        <div class="grid md:grid-cols-3 gap-12">
+
+            <!-- Brand -->
+
+            <div>
+
+                <div class="flex items-center gap-3 mb-5">
+
+                    <div class="w-12 h-12 bg-[#c9a15f] flex items-center justify-center text-black text-xl">
+
+                        🎓
+
+                    </div>
+
+                    <h3 class="font-serif text-2xl">
+                        <%= site.name %>
+                    </h3>
+
+                </div>
+
+                <p class="text-gray-400 leading-7 max-w-sm">
+
+                    Where structured learning meets individual attention.
+                    Building academic excellence one student at a time.
+
+                </p>
+
+            </div>
+
+            <!-- Quick Links -->
+
+            <div>
+
+                <h3 class="font-serif text-2xl mb-6">
+                    Quick Links
+                </h3>
+
+                <ul class="space-y-3">
+
+                    <li>
+                        <a href="/" class="text-gray-400 hover:text-[#c9a15f] transition">
+
+                            Home
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/subjects" class="text-gray-400 hover:text-[#c9a15f] transition">
+
+                            Subjects
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/about" class="text-gray-400 hover:text-[#c9a15f] transition">
+
+                            About Tutor
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/results" class="text-gray-400 hover:text-[#c9a15f] transition">
+
+                            Results
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/contact" class="text-gray-400 hover:text-[#c9a15f] transition">
+
+                            Contact & Enroll
+
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- Contact -->
+
+            <div>
+
+                <h3 class="font-serif text-2xl mb-6">
+                    Get In Touch
+                </h3>
+
+                <div class="space-y-5">
+
+                    <div class="flex gap-3">
+
+                        <span class="text-[#c9a15f] text-lg">
+                            📞
+                        </span>
+
+                        <a href="tel:<%= site.phone.replace(/\s+/g,'') %>"
+                            class="text-gray-400 hover:text-white transition">
+
+                            <%= site.phone %>
+
+                        </a>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <span class="text-[#c9a15f] text-lg">
+                            ✉️
+                        </span>
+
+                        <a href="mailto:<%= site.email %>" class="text-gray-400 hover:text-white transition">
+
+                            <%= site.email %>
+
+                        </a>
+
+                    </div>
+
+                    <div class="flex gap-3">
+
+                        <span class="text-[#c9a15f] text-lg">
+                            📍
+                        </span>
+
+                        <span class="text-gray-400">
+
+                            <%= site.address %>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Divider -->
+
+        <div class="mt-16 border-t border-white/10 pt-8">
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+
+                <p class="text-sm text-gray-500">
+
+                    © <%= new Date().getFullYear() %>
+                        <%= site.name %>.
+                            All Rights Reserved.
+
+                </p>
+                <p class="text-sm text-gray-500">Made by Vishal❤️</p>
+
+                <p class="text-sm text-gray-500">
+
+                    Crafted With Precision For Academic Excellence.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+    AOS.init({
+        duration: 1000,
+        once: false,
+        offset: 100,
+        easing: "ease-out"
+    });
+</script>

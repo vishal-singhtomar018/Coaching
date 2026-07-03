@@ -1,0 +1,277 @@
+<%- include('../partials/head') %>
+
+    <body class="bg-[#f8f7f5]">
+
+        <%- include('../partials/navbar') %>
+
+            <section class="pt-36 pb-24">
+
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+                    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+
+                        <!-- LEFT SIDE -->
+
+                        <div data-aos="fade-right">
+
+                            <p class="uppercase tracking-[4px] text-[#c9a15f] mb-4">
+                                Contact & Enrollment
+                            </p>
+
+                            <h1 class="font-serif text-5xl lg:text-6xl leading-tight mb-6">
+                                Start Your
+                                <span class="text-[#c9a15f]">
+                                    Academic Journey
+                                </span>
+                            </h1>
+
+                            <p class="text-gray-600 text-lg leading-relaxed mb-12">
+                                Whether you're looking for home tuition, coaching classes,
+                                exam preparation, or academic guidance, we're here to help.
+                                Submit your inquiry and we'll contact you within 24 hours.
+                            </p>
+
+                            <!-- Contact Info -->
+                             
+                            <div class="space-y-8">
+
+                                <div class="flex gap-4" data-aos="fade-up">
+
+                                    <div
+                                        class="w-12 h-12 border border-[#c9a15f]/30 flex items-center justify-center text-xl">
+                                        📞
+                                    </div>
+
+                                    <div>
+
+                                        <p class="text-xs uppercase tracking-[3px] text-gray-400 mb-1">
+                                            Call Us
+                                        </p>
+
+                                        <a href="tel:<%= site.phone.replace(/\s+/g,'') %>"
+                                            class="text-lg hover:text-[#c9a15f] transition">
+
+                                            <%= site.phone %>
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="flex gap-4" data-aos="fade-up" data-aos-delay="100">
+
+                                    <div
+                                        class="w-12 h-12 border border-[#c9a15f]/30 flex items-center justify-center text-xl">
+                                        ✉️
+                                    </div>
+
+                                    <div>
+
+                                        <p class="text-xs uppercase tracking-[3px] text-gray-400 mb-1">
+                                            Email
+                                        </p>
+
+                                        <a href="mailto:<%= site.email %>"
+                                            class="text-lg hover:text-[#c9a15f] transition">
+
+                                            <%= site.email %>
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="flex gap-4" data-aos="fade-up" data-aos-delay="200">
+
+                                    <div
+                                        class="w-12 h-12 border border-[#c9a15f]/30 flex items-center justify-center text-xl">
+                                        📍
+                                    </div>
+
+                                    <div>
+
+                                        <p class="text-xs uppercase tracking-[3px] text-gray-400 mb-1">
+                                            Address
+                                        </p>
+
+                                        <p class="text-lg">
+                                            <%= site.address %>
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- What To Expect -->
+
+                            <div class="mt-12 bg-white border p-8" data-aos="fade-up">
+
+                                <h3 class="font-serif text-2xl mb-5">
+                                    What To Expect
+                                </h3>
+
+                                <ul class="space-y-3 text-gray-600">
+
+                                    <li>✅ Free Trial Class</li>
+
+                                    <li>✅ Personalized Study Plan</li>
+
+                                    <li>✅ Flexible Scheduling</li>
+
+                                    <li>✅ Regular Progress Reports</li>
+
+                                    <li>✅ Individual Attention</li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                        <!-- RIGHT SIDE -->
+
+                        <div data-aos="fade-left">
+
+                            <% if(success){ %>
+
+                                <div id="success-message"
+                                    class="bg-green-100 border border-green-400 text-green-700 px-5 py-4 rounded mb-6">
+
+                                    ✅ Inquiry submitted successfully. We will contact you shortly.
+
+                                </div>
+
+                                <% } %>
+
+                                    <% if (errors && errors.length> 0) { %>
+
+                                        <div id="error-message"
+                                            class="bg-red-100 border border-red-400 text-red-700 px-5 py-4 rounded mb-6">
+
+                                                        Something went wrong. Please try again.
+
+                                        </div>
+
+                                        <% } %>
+
+                                            <% if (typeof errors !=='undefined' && errors.length> 0) { %>
+
+                                                <div id="validation-message"
+                                                    class="bg-red-100 border border-red-300 text-red-700 p-4 mb-6">
+
+                                                    <% errors.forEach(error=> { %>
+                                                        <p>
+                                                            <%= error %>
+                                                        </p>
+                                                        <% }) %>
+
+                                                </div>
+
+                                                <% } %>
+
+
+                                                    <form action="/contact" method="POST"
+                                                        class="bg-white border border-gray-200 shadow-sm p-8 lg:p-10">
+
+                                                        <h2 class="font-serif text-3xl mb-2">
+                                                            Enrollment Inquiry
+                                                        </h2>
+
+                                                        <p class="text-gray-500 mb-8">
+                                                            Fill in your details and we'll get back to you soon.
+                                                        </p>
+
+                                                        <div class="grid gap-5">
+
+                                                            <input type="text" name="parentName"
+                                                                placeholder="Student / Parent Name" required
+                                                                class="border border-gray-300 p-4 focus:outline-none focus:border-[#c9a15f]">
+
+                                                            <input type="tel" name="phone" placeholder="Phone Number"
+                                                                required
+                                                                class="border border-gray-300 p-4 focus:outline-none focus:border-[#c9a15f]">
+
+                                                            <input type="email" name="email" placeholder="Email Address"
+                                                                class="border border-gray-300 p-4 focus:outline-none focus:border-[#c9a15f]">
+
+                                                            <textarea name="message" rows="5"
+                                                                placeholder="Tell us about your requirements..."
+                                                                class="border border-gray-300 p-4 resize-none focus:outline-none focus:border-[#c9a15f]"></textarea>
+
+                                                            <button type="submit"
+                                                                class="bg-black text-white py-4 font-medium tracking-wide hover:bg-[#c9a15f] hover:text-black transition duration-300">
+
+                                                                Send Inquiry →
+
+                                                            </button>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                    <!-- Quick Actions -->
+
+                                                    <div class="grid sm:grid-cols-2 gap-4 mt-6">
+
+                                                        <a href="/enroll-student"
+                                                            class="bg-[#c9a15f] text-center py-4 font-medium hover:bg-[#b88f4d] transition">
+
+                                                            🎓 Student Enrollment
+
+                                                        </a>
+
+                                                        <a href="/enroll-tutor"
+                                                            class="border border-[#c9a15f] text-center py-4 font-medium hover:bg-[#c9a15f] hover:text-black transition">
+
+                                                            👨‍🏫 Tutor Registration
+
+                                                        </a>
+
+                                                    </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- Success/Error Auto Hide -->
+
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+
+                    [
+                        "success-message",
+                        "error-message",
+                        "validation-message"
+                    ].forEach(id => {
+
+                        const element = document.getElementById(id);
+
+                        if (element) {
+                            setTimeout(() => {
+
+                                element.style.transition = "all 0.5s ease";
+                                element.style.opacity = "0";
+                                element.style.transform = "translateY(-10px)";
+
+                                setTimeout(() => {
+                                    element.remove();
+                                }, 500);
+
+                            }, 3000);
+                        }
+
+                    });
+
+                });
+            </script>
+            <%- include('../partials/footer') %>
+
+    </body>

@@ -1,0 +1,94 @@
+<%- include('../partials/head') %>
+
+    <%- include('../partials/navbar') %>
+            <div class="flex justify-evenly items-center mb-10 pt-5 ">
+
+            <div>
+                <h1 class="font-serif text-5xl">
+                    Our Mentors
+                </h1>
+                <p class="text-gray-500 mt-2">
+                    Learn from our experienced educators.
+                </p>
+            </div>
+
+            <% if (user && user.role==="admin" ) { %>
+
+                <a href="/admin/mentors/add"
+                    class="bg-[#c9a15f] text-black px-6 py-3 font-medium hover:bg-black hover:text-white transition">
+                    + Add Mentor
+                </a>
+
+                <% } %>
+
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pt-6">
+
+            <% mentors.forEach(mentor=> { %>
+
+                <div class="mentor-card bg-white border p-6 text-center hover:shadow-xl transition duration-300">
+
+                    <!-- Decorative Image -->
+                    <div class="relative w-40 h-40 mx-auto mb-6">
+
+                        <!-- Background Circle -->
+                        <div class="absolute inset-0 bg-[#c9a15f]/10 rounded-full transform rotate-6">
+                        </div>
+
+                        <!-- Mentor Image -->
+                        <img src="<%= mentor.image.url %>" alt="<%= mentor.name %>"
+                            class="relative w-full h-full object-cover rounded-full border-4 border-[#c9a15f] shadow-lg">
+
+                    </div>
+
+                    <h3 class="font-serif text-2xl mb-2">
+                        <%= mentor.name %>
+                    </h3>
+
+                    <p class="text-[#c9a15f] font-medium mb-4">
+                        <%= mentor.subject %>
+                    </p>
+
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                        <%= mentor.description %>
+                    </p>
+
+                    <a href="/mentors/<%= mentor.id %>"
+                        class="inline-block bg-black text-white px-6 py-3 hover:bg-[#c9a15f] hover:text-black transition">
+
+                        View Profile →
+
+                    </a>
+
+                </div>
+
+                <% }) %>
+
+        </div>
+
+        <section class="mt-24">
+
+            <div class="bg-black text-white text-center py-20 px-6">
+
+                <h2 class="font-serif text-5xl mb-6">
+                    Become A Mentor
+                </h2>
+
+                <p class="max-w-2xl mx-auto text-gray-300 mb-10">
+
+                    Passionate about teaching? Join our growing team of
+                    educators and inspire the next generation.
+
+                </p>
+
+                <a href="/enroll-tutor" class="bg-[#c9a15f] text-black px-10 py-4 inline-block">
+
+                    Apply Now →
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <%- include('../partials/footer') %>

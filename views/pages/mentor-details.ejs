@@ -1,0 +1,59 @@
+<%- include('../partials/head') %>
+
+    <%- include('../partials/navbar') %>
+
+<section class="pt-32 pb-24">
+
+    <div class="max-w-6xl mx-auto px-6">
+
+        <div class="grid lg:grid-cols-2 gap-16">
+
+            <img
+                src="<%= mentor.image.url %>"
+                class="w-full h-[600px] object-cover">
+
+            <div>
+
+                <h1 class="font-serif text-6xl mb-4">
+                    <%= mentor.name %>
+                </h1>
+
+                <p class="text-[#c9a15f] text-xl mb-6">
+                    <%= mentor.subject %>
+                </p>
+
+                <div class="space-y-4 mb-8">
+
+                    <p>
+                        <strong>Experience:</strong>
+                        <%= mentor.experience %>
+                    </p>
+                    
+                    <p>
+                        <strong>Qualification:</strong>
+                        <%= mentor.qualification %>
+                    </p>
+
+                </div>
+
+                <p class="text-gray-600 leading-8 mb-10">
+                    <%= mentor.description %>
+                </p>
+
+                <a
+                    href="/contact"
+                    class="bg-black text-white px-8 py-4 inline-block">
+
+                    Book Demo Class
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include('../partials/footer') %>

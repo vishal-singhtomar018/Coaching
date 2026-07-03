@@ -1,0 +1,25 @@
+<div class="relative">
+    <input
+        type="<%= type || 'text' %>"
+        id="<%= name %>"
+        name="<%= name %>"
+        value="<%= value || '' %>"
+        placeholder=" "
+        class="peer w-full border border-gray-300 px-4 pt-6 pb-2 focus:outline-none focus:border-[#c9a15f]">
+
+    <label
+        for="<%= name %>"
+        class="absolute left-4 top-4 text-gray-500 transition-all duration-200
+               peer-placeholder-shown:text-base
+               peer-placeholder-shown:top-4
+               peer-focus:-top-2
+               peer-focus:text-xs
+               peer-focus:text-[#c9a15f]
+               peer-not-placeholder-shown:-top-2
+               peer-not-placeholder-shown:text-xs
+               bg-white px-1">
+
+        <%= label %>
+
+    </label>
+</div>

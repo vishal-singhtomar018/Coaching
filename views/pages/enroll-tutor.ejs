@@ -1,0 +1,227 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/navbar') %>
+
+        <% if (errors && errors.length> 0) { %>
+            <div id="validation-message" class="bg-red-100 border border-red-300 text-red-700 p-4 mb-6">
+
+                <% errors.forEach(error=> { %>
+                    <p>
+                        <%= error %>
+                    </p>
+                    <% }) %>
+
+            </div>
+            <% } %>
+
+                <% if (success) { %>
+                    <div id="success-message" class="bg-green-100 border border-green-300 text-green-700 p-4 mb-6">
+
+                        Enrollment submitted successfully.
+
+                    </div>
+                    <% } %>
+
+                        <% if (error) { %>
+                            <div id="error-message" class="bg-red-100 border border-red-300 text-red-700 p-4 mb-6">
+
+                                Something went wrong. Please try again.
+
+                            </div>
+                            <% } %>
+                                <form action="/enroll-tutor" method="POST" class="bg-white p-8 shadow">
+
+                                    <h2 class="text-3xl font-serif mb-6">
+                                        Tutor Registration
+                                    </h2>
+
+                                    <div class="grid md:grid-cols-2 gap-5">
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Full Name
+                                            </label>
+                                            <input type="text" name="name" placeholder="Enter your full name"
+                                                class="w-full border p-4" value="<%= formData?.name || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Gender
+                                            </label>
+                                            <select name="gender" class="w-full border p-4">
+                                                <option value="Male" <%=formData?.gender==='Male' ? 'selected' : '' %>
+                                                    >Male</option>
+                                                <option value="Female" <%=formData?.gender==='Female' ? 'selected' : ''
+                                                    %>>Female</option>
+                                                <option value="Other" <%=formData?.gender==='Other' ? 'selected' : '' %>
+                                                    >Other</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Age
+                                            </label>
+                                            <input type="number" name="age" placeholder="Enter age"
+                                                class="w-full border p-4" value="<%= formData?.age || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Marital Status
+                                            </label>
+                                            <select name="maritalStatus" class="w-full border p-4">
+                                                <option value="Married" <%=formData?.maritalStatus==='Married'
+                                                    ? 'selected' : '' %>>Married</option>
+                                                <option value="Unmarried" <%=formData?.maritalStatus==='Unmarried'
+                                                    ? 'selected' : '' %>>Unmarried</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Qualification
+                                            </label>
+                                            <input type="text" name="qualification" placeholder="Highest qualification"
+                                                class="w-full border p-4" value="<%= formData?.qualification || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Experience
+                                            </label>
+                                            <input type="text" name="experience" placeholder="Teaching experience"
+                                                class="w-full border p-4" value="<%= formData?.experience || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Classes You Can Teach
+                                            </label>
+                                            <input type="text" name="classesTeach" placeholder="e.g. 6th–12th"
+                                                class="w-full border p-4" value="<%= formData?.classesTeach || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Subject Expertise
+                                            </label>
+                                            <input type="text" name="subjectExpertise" placeholder="Maths, Physics..."
+                                                class="w-full border p-4"
+                                                value="<%= formData?.subjectExpertise || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Preferred Time
+                                            </label>
+                                            <input type="text" name="preferredTime" placeholder="Morning / Evening"
+                                                class="w-full border p-4" value="<%= formData?.preferredTime || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Preferred Job Location
+                                            </label>
+                                            <input type="text" name="jobLocation" placeholder="Enter location"
+                                                class="w-full border p-4" value="<%= formData?.jobLocation || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Expected Salary
+                                            </label>
+                                            <input type="text" name="expectedSalary" placeholder="Expected salary"
+                                                class="w-full border p-4" value="<%= formData?.expectedSalary || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Personal Vehicle
+                                            </label>
+                                            <input type="text" name="personalVehicle" placeholder="Yes / No"
+                                                class="w-full border p-4"
+                                                value="<%= formData?.personalVehicle || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Area You Can Cover
+                                            </label>
+                                            <input type="text" name="areaCover" placeholder="Nearby areas"
+                                                class="w-full border p-4" value="<%= formData?.areaCover || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Contact Number
+                                            </label>
+                                            <input type="text" name="contactNumber" placeholder="10-digit mobile number"
+                                                class="w-full border p-4" value="<%= formData?.contactNumber || '' %>">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">
+                                                Email Address
+                                            </label>
+                                            <input type="email" name="email" placeholder="example@gmail.com"
+                                                class="w-full border p-4" value="<%= formData?.email || '' %>">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <label class="block text-sm text-gray-600 mb-1">
+                                            Other Skills
+                                        </label>
+                                        <textarea name="otherSkills" rows="4"
+                                            class="w-full border p-4"><%= formData?.otherSkills || '' %></textarea>
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <label class="block text-sm text-gray-600 mb-1">
+                                            Current Address
+                                        </label>
+                                        <textarea name="address" rows="3"
+                                            class="w-full border p-4"><%= formData?.address || '' %></textarea>
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <label class="block text-sm text-gray-600 mb-1">
+                                            Permanent Address
+                                        </label>
+                                        <textarea name="permanentAddress" rows="3"
+                                            class="w-full border p-4"><%= formData?.permanentAddress || '' %></textarea>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="bg-black text-white px-8 py-4 mt-6 hover:bg-[#c9a15f] transition">
+
+                                        Register as Tutor
+
+                                    </button>
+
+                                </form>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        ["success-message", "error-message", "validation-message"]
+                                            .forEach(id => {
+                                                const el = document.getElementById(id);
+
+                                                if (el) {
+                                                    setTimeout(() => {
+                                                        el.style.transition = "all .5s";
+                                                        el.style.opacity = "0";
+                                                        el.style.transform = "translateY(-10px)";
+
+                                                        setTimeout(() => {
+                                                            el.remove();
+                                                        }, 500);
+                                                    }, 3000);
+                                                }
+                                            });
+                                    });
+                                </script>
+
+
+                                <%- include('../partials/footer') %>

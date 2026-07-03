@@ -1,0 +1,181 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/navbar') %>
+
+
+        <% if (errors && errors.length> 0) { %>
+            <div id="validation-message" class="bg-red-100 border border-red-300 text-red-700 p-4 mb-6">
+
+                <% errors.forEach(error=> { %>
+                    <p>
+                        <%= error %>
+                    </p>
+                    <% }) %>
+
+            </div>
+            <% } %>
+
+                <% if (success) { %>
+                    <div id="success-message" class="bg-green-100 border border-green-300 text-green-700 p-4 mb-6">
+
+                        Enrollment submitted successfully.
+
+                    </div>
+                    <% } %>
+
+                        <% if (error) { %>
+                            <div id="error-message" class="bg-red-100 border border-red-300 text-red-700 p-4 mb-6">
+
+                                Something went wrong. Please try again.
+
+                            </div>
+                            <% } %>
+                                <form action="/enroll-student" method="POST" class="bg-white p-8 shadow">
+
+                                    <h2 class="text-3xl font-serif mb-6">
+                                        Student Enrollment
+                                    </h2>
+
+                                    <div class="grid md:grid-cols-2 gap-5">
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Student Name</label>
+                                            <input type="text" name="studentName" placeholder="Enter student name"
+                                                value="<%= formData.studentName || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Class</label>
+                                            <input type="text" name="class" placeholder="e.g. 10th"
+                                                value="<%= formData.class || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Subject</label>
+                                            <input type="text" name="subject" placeholder="Mathematics, Physics..."
+                                                value="<%= formData.subject || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">School</label>
+                                            <input type="text" name="school" placeholder="School Name"
+                                                value="<%= formData.school || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Board</label>
+                                            <input type="text" name="board" placeholder="CBSE / ICSE / State Board"
+                                                value="<%= formData.board || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Medium</label>
+                                            <input type="text" name="medium" placeholder="English / Hindi"
+                                                value="<%= formData.medium || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Course Duration</label>
+                                            <input type="text" name="duration" placeholder="6 Months / 1 Year"
+                                                value="<%= formData.duration || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Preferred Time Slot</label>
+                                            <input type="text" name="timeSlot" placeholder="Morning / Evening"
+                                                value="<%= formData.timeSlot || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Current Location</label>
+                                            <input type="text" name="currentLocation" placeholder="Current Address/Area"
+                                                value="<%= formData.currentLocation || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Nearest Landmark</label>
+                                            <input type="text" name="landmark" placeholder="Nearby Landmark"
+                                                value="<%= formData.landmark || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mt-5">
+                                        <label class="block text-sm text-gray-600 mb-1">Permanent Address</label>
+                                        <textarea name="permanentAddress" rows="4" class="w-full border p-4"
+                                            placeholder="Enter permanent address"><%= formData.permanentAddress || '' %></textarea>
+                                    </div>
+
+                                    <div class="grid md:grid-cols-2 gap-5 mt-5">
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Parent Name</label>
+                                            <input type="text" name="parentName" placeholder="Parent/Guardian Name"
+                                                value="<%= formData.parentName || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Parent Occupation</label>
+                                            <input type="text" name="parentOccupation" placeholder="Occupation"
+                                                value="<%= formData.parentOccupation || '' %>"
+                                                class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Student Contact
+                                                Number</label>
+                                            <input type="tel" name="studentContact" placeholder="10-digit mobile number"
+                                                value="<%= formData.studentContact || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Parent Contact
+                                                Number</label>
+                                            <input type="tel" name="parentContact" placeholder="10-digit mobile number"
+                                                value="<%= formData.parentContact || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">WhatsApp Number</label>
+                                            <input type="tel" name="whatsappNumber" placeholder="WhatsApp Number"
+                                                value="<%= formData.whatsappNumber || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm text-gray-600 mb-1">Email Address</label>
+                                            <input type="email" name="email" placeholder="example@gmail.com"
+                                                value="<%= formData.email || '' %>" class="w-full border p-4">
+                                        </div>
+
+                                    </div>
+
+                                    <button type="submit"
+                                        class="bg-black text-white px-8 py-4 mt-8 hover:bg-[#c9a15f] hover:text-black transition">
+
+                                        Submit Enrollment
+
+                                    </button>
+
+                                </form>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        ["success-message", "error-message", "validation-message"]
+                                            .forEach(id => {
+                                                const el = document.getElementById(id);
+
+                                                if (el) {
+                                                    setTimeout(() => {
+                                                        el.style.transition = "all .5s";
+                                                        el.style.opacity = "0";
+                                                        el.style.transform = "translateY(-10px)";
+
+                                                        setTimeout(() => {
+                                                            el.remove();
+                                                        }, 500);
+                                                    }, 3000);
+                                                }
+                                            });
+                                    });
+                                </script>
+
+                                <%- include('../partials/footer') %>

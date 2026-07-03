@@ -1,0 +1,63 @@
+
+<%- include('../partials/head') %>
+
+    <%- include('../partials/navbar') %>
+<section class="min-h-screen flex justify-center items-center bg-[#f8f7f5]">
+
+    <form
+        action="/login"
+        method="POST"
+        class="bg-white p-10 shadow-xl w-[450px]">
+
+        <h1 class="font-serif text-4xl mb-8 text-center">
+            Login
+        </h1>
+
+        <select
+            name="role"
+            class="w-full border p-4 mb-5">
+
+            <option value="user">
+                Login as User
+            </option>
+
+            <option value="admin">
+                Login as Admin
+            </option>
+
+        </select>
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            class="w-full border p-4 mb-5">
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            class="w-full border p-4 mb-5">
+
+        <button
+            class="w-full bg-black text-white py-4">
+
+            Login
+
+        </button>
+
+        <p class="mt-6 text-center">
+            Don't have an account?
+
+            <a
+                href="/signup"
+                class="text-[#c9a15f]">
+
+                Signup
+
+            </a>
+        </p>
+
+    </form>
+
+</section>

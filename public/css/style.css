@@ -1,0 +1,273 @@
+.hero {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.hero-content {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 8%;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-image {
+    width: 50%;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    display: block;
+}
+
+@media(max-width:768px) {
+
+    .hero {
+        flex-direction: column;
+    }
+
+    .hero-content {
+        width: 100%;
+        padding: 120px 30px 60px;
+    }
+
+    .hero-image {
+        width: 100%;
+    }
+
+    .hero-image img {
+        height: 500px;
+    }
+
+}
+
+.hero-marquee {
+    position: absolute;
+    top: 25%;
+    white-space: nowrap;
+    font-family: serif;
+    font-size: clamp(4rem, 12vw, 14rem);
+    color: rgba(0, 0, 0, 0.03);
+    animation: marquee 40s linear infinite alternate;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(10%);
+    }
+
+    to {
+        transform: translateX(-10%);
+    }
+}
+
+@media(max-width:1024px) {
+
+
+    .hero-marquee {
+        font-size: 5rem;
+    }
+
+}
+
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10vw;
+    opacity: .03;
+    white-space: nowrap;
+    pointer-events: none;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.subject-row {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: center;
+    padding: 35px 0;
+    border-bottom: 1px solid #e5e5e5;
+    transition: .3s;
+}
+
+.subject-row:hover {
+    padding-left: 20px;
+    color: #c9a15f;
+}
+
+.subject-row h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+}
+
+@media(max-width:768px) {
+    .hero {
+        grid-template-columns: 1fr;
+    }
+}
+
+.subject-card,
+.testimonial-card,
+.mentor-card,
+.cta-card {
+    transition: all 0.4s ease;
+}
+
+.subject-card:hover,
+.testimonial-card:hover {
+    transform: translateY(-8px);
+}
+
+.hero-btn,
+.nav-link {
+    transition: all 0.3s ease;
+}
+
+/* Moving Background Text */
+.hero-marquee {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    white-space: nowrap;
+    font-size: 9rem;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.03);
+    transform: translateY(-50%);
+    animation: marquee 25s linear infinite;
+    user-select: none;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0) translateY(-50%);
+    }
+
+    to {
+        transform: translateX(-50%) translateY(-50%);
+    }
+}
+
+/* Floating Hero Image */
+.floating-image {
+    animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Stats Animation */
+.stat-card {
+    animation: pulseCard 3s ease-in-out infinite;
+}
+
+@keyframes pulseCard {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* CTA Button Glow */
+.hero-btn {
+    animation: glow 2.5s infinite;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 0 rgba(201, 161, 95, 0);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(201, 161, 95, .5);
+    }
+
+    100% {
+        box-shadow: 0 0 0 rgba(201, 161, 95, 0);
+    }
+}
+
+/* Floating tutor image */
+.floating-image {
+    animation: floatImage 5s ease-in-out infinite;
+}
+
+@keyframes floatImage {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Philosophy cards */
+.border:hover {
+    transform: translateY(-8px);
+    transition: all .4s ease;
+}
+
+/* Timeline dots pulse */
+.bg-\[\#c9a15f\] {
+    animation: pulseDot 2.5s infinite;
+}
+
+@keyframes pulseDot {
+    0% {
+        box-shadow: 0 0 0 0 rgba(201, 161, 95, .5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 12px rgba(201, 161, 95, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(201, 161, 95, 0);
+    }
+}
+
+.mentor-card {
+    transition: all .4s ease;
+}
+
+.mentor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .08);
+    border-color: #c9a15f;
+}
+
+.mentor-card img {
+    transition: all .4s ease;
+}
+
+.mentor-card:hover img {
+    transform: scale(1.08);
+}
