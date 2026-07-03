@@ -5,7 +5,7 @@ const sendMail = require("../utils/sendMail");
 exports.contactPage = (req, res) => {
   res.render("pages/contact", {
     success: false,
-    error: false,
+    error: false, 
     errors: [],
     formData: {},
   });

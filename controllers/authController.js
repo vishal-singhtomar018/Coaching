@@ -2,7 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const Student = require("../models/StudentEnrollment");
 const Tutor = require("../models/TutorEnrollment");
-const contact = require("../models/Contact");
+const Contact = require("../models/Contact");
 
 exports.loginPage = (req, res) => {
   res.render("auth/login");
@@ -151,7 +151,7 @@ exports.tutorsPage = async (req, res) => {
 
 exports.messagesPage = async (req, res) => {
   try {
-    const messages = await contact.find().sort({
+    const messages = await Contact.find().sort({
       createdAt: -1,
     });
 
