@@ -3,7 +3,7 @@ const Mentor = require("../models/Mentor");
 const data = require("./data");
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/coaching")
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("Database Connected");
   });
