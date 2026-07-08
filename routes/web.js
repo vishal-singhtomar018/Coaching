@@ -69,6 +69,13 @@ router.post(
 );
 
 router.post(
+  "/admin/mentors/:id/delete",
+  isLoggedIn,
+  isAdmin,
+  authController.DeleteMentor,
+);
+
+router.post(
   "/admin/messages/:id/delete",
   isLoggedIn,
   isAdmin,
@@ -78,4 +85,5 @@ router.post(
 router.get("/admin/students/search", isAdmin, authController.searchStudents);
 
 router.get("/admin/tutors/search", isAdmin, authController.searchTutors);
+router.get("/admin/mentors/search", isAdmin, authController.searchMentors);
 module.exports = router;

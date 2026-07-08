@@ -1,0 +1,75 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+
+    <h1 class="font-serif text-4xl mb-8">
+        Mentor Search Results
+    </h1>
+
+    <% if (mentors.length === 0) { %>
+
+        <div class="text-center py-20">
+
+            <i class="fa-solid fa-chalkboard-user text-6xl text-gray-300 mb-4"></i>
+
+            <h2 class="text-3xl font-serif text-gray-700 mb-2">
+                No Mentor Found
+            </h2>
+
+            <p class="text-gray-500">
+                No mentor matches your search.
+            </p>
+
+        </div>
+
+    <% } else { %>
+
+        <% mentors.forEach(mentor => { %>
+
+            <div class="border rounded-lg shadow-sm p-5 mb-5 bg-white flex flex-col md:flex-row items-center gap-6">
+
+                <img
+                    src="<%= mentor.image.url %>"
+                    alt="<%= mentor.name %>"
+                    class="w-28 h-28 rounded-full object-cover border-4 border-[#c9a15f] shadow">
+
+                <div class="flex-1">
+
+                    <h3 class="text-2xl font-serif mb-2">
+                        <%= mentor.name %>
+                    </h3>
+
+                    <p class="text-[#c9a15f] font-medium mb-2">
+                        <%= mentor.subject %>
+                    </p>
+
+                    <p class="text-gray-600 mb-3">
+                        <%= mentor.description %>
+                    </p>
+
+                    <% if (mentor.isDeleted) { %>
+
+                        <span class="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
+                            Inactive
+                        </span>
+
+                    <% } else { %>
+
+                        <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                            active
+                        </span>
+
+                    <% } %>
+
+                </div>
+
+            </div>
+
+        <% }) %>
+
+    <% } %>
+
+</section>
+
+<%- include('../partials/footer') %>

@@ -3,7 +3,11 @@ const Mentor = require("../models/Mentor");
 // All mentors page
 exports.mentorsPage = async (req, res) => {
   try {
-    const mentors = await Mentor.find();
+    const mentors = await Mentor.find({
+      isDeleted: false,
+    }).sort({
+      createdAt: -1,
+    });
 
     res.render("pages/mentors", {
       mentors,

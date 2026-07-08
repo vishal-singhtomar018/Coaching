@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const Student = require("../models/StudentEnrollment");
 const Tutor = require("../models/TutorEnrollment");
 const Contact = require("../models/Contact");
+const Mentor = require("../models/Mentor");
 
 exports.loginPage = (req, res) => {
   res.render("auth/login");
@@ -193,6 +194,20 @@ exports.deleteTutor = async (req, res) => {
     res.status(500).send("Unable to delete tutor");
   }
 };
+exports.DeleteMentor = async (req, res) => {
+  console.log("hit delete route")
+  try {
+    await Mentor.findByIdAndUpdate(req.params.id, {
+      isDeleted: true,
+    });
+
+    res.redirect("/mentors");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Unable to delete Mentor");
+  }
+};
+
 
 exports.deleteMessage = async (req, res) => {
   try {
@@ -216,7 +231,6 @@ exports.searchStudents = async (req, res) => {
       },
     }).sort({ createdAt: -1 });
 
-    
     res.render("dashboard/Search", {
       title: "Student Search",
       students,
@@ -243,6 +257,32 @@ exports.searchTutors = async (req, res) => {
     res.render("dashboard/tutor", {
       title: "Tutor Search",
       tutors,
+      search: keyword,
+      user: req.session.user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+
+exports.searchMentors = async (req, res) => {
+  try {
+    const keyword = req.query.q || "";
+
+    const mentors = await Mentor.find({
+      name: {
+        $regex: keyword,
+        $options: "i",
+      },
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.render("dashboard/searchMentors", {
+      title: "Mentor Search",
+      mentors,
       search: keyword,
       user: req.session.user,
     });

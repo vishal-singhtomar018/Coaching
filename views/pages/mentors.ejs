@@ -1,96 +1,181 @@
-<%- include('../partials/head') %>
-
+    <%- include('../partials/head') %>
     <%- include('../partials/navbar') %>
-        <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
-            <div class="flex justify-evenly items-center mb-10 pt-5 ">
 
-                <div>
-                    <h1 class="font-serif text-5xl">
-                        Our Mentors
-                    </h1>
-                    <p class="text-gray-500 mt-2">
-                        Learn from our experienced educators.
-                    </p>
-                </div>
+    <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
 
-                <% if (user && user.role==="admin" ) { %>
+        <!-- Heading -->
+        <div class="text-center mb-10">
 
-                    <a href="/admin/mentors/add"
-                        class="bg-[#c9a15f] text-black px-6 py-3 font-medium hover:bg-black hover:text-white transition">
-                        + Add Mentor
-                    </a>
+            <h1 class="font-serif text-5xl">
+                Our Mentors
+            </h1>
 
-                    <% } %>
+            <p class="text-gray-500 mt-3">
+                Learn from our experienced educators.
+            </p>
+
+        </div>
+
+        <!-- Search -->
+        <div class="flex justify-center mb-12">
+
+            <form action="/admin/mentors/search"
+                method="GET"
+                class="flex items-center bg-white border border-gray-300 rounded-full shadow-md overflow-hidden w-full max-w-xl">
+
+                <span class="pl-5 text-gray-500">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search Mentor..."
+                    class="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400">
+
+                <button
+                    type="submit"
+                    class="bg-black text-white px-6 py-3 hover:bg-[#c9a15f] hover:text-black transition">
+
+                    Search
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <% if (mentors.length === 0) { %>
+
+            <div class="text-center py-20">
+
+                <i class="fa-solid fa-user-tie text-6xl text-gray-300 mb-5"></i>
+
+                <h2 class="font-serif text-3xl mb-3">
+                    No Mentors Available
+                </h2>
+
+                <p class="text-gray-500">
+                    Mentors will appear here once added.
+                </p>
 
             </div>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pt-6">
 
-            <% mentors.forEach(mentor=> { %>
+        <% } else { %>
 
-                <div class="mentor-card bg-white border p-6 text-center hover:shadow-xl transition duration-300">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                    <!-- Decorative Image -->
-                    <div class="relative w-40 h-40 mx-auto mb-6">
+                <% mentors.forEach(mentor => { %>
 
-                        <!-- Background Circle -->
-                        <div class="absolute inset-0 bg-[#c9a15f]/10 rounded-full transform rotate-6">
+                    <div class="bg-white border shadow-sm hover:shadow-xl transition p-6 text-center">
+
+                        <div class="relative w-40 h-40 mx-auto mb-6">
+
+                            <div class="absolute inset-0 bg-[#c9a15f]/10 rounded-full rotate-6"></div>
+
+                            <img
+                                src="<%= mentor.image.url %>"
+                                alt="<%= mentor.name %>"
+                                class="relative w-full h-full object-cover rounded-full border-4 border-[#c9a15f] shadow-lg">
+
                         </div>
 
-                        <!-- Mentor Image -->
-                        <img src="<%= mentor.image.url %>" alt="<%= mentor.name %>"
-                            class="relative w-full h-full object-cover rounded-full border-4 border-[#c9a15f] shadow-lg">
+                        <h3 class="font-serif text-2xl mb-2">
+                            <%= mentor.name %>
+                        </h3>
+
+                        <p class="text-[#c9a15f] font-medium mb-4">
+                            <%= mentor.subject %>
+                        </p>
+
+                        <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                            <%= mentor.description %>
+                        </p>
+
+                        <a
+                            href="/mentors/<%= mentor._id %>"
+                            class="inline-block bg-black text-white px-6 py-3 hover:bg-[#c9a15f] hover:text-black transition">
+
+                            View Profile →
+                            </a>
+
+                            
+                        <% if (user && user.role === "admin") { %>
+
+                            <form
+                                action="/admin/mentors/<%= mentor._id %>/delete"
+                                method="POST"
+                                class="mt-5"
+                                onsubmit="return confirm('Delete this mentor?')">
+
+                                <button>
+
+                                    <i class="fa-solid fa-trash mr-2"></i>
+
+                                    remove Mentor
+
+                                </button>
+
+                            </form>
+
+                        <% } %>
+
 
                     </div>
 
-                    <h3 class="font-serif text-2xl mb-2">
-                        <%= mentor.name %>
-                    </h3>
-
-                    <p class="text-[#c9a15f] font-medium mb-4">
-                        <%= mentor.subject %>
-                    </p>
-
-                    <p class="text-gray-600 text-sm leading-relaxed mb-6">
-                        <%= mentor.description %>
-                    </p>
-
-                    <a href="/mentors/<%= mentor.id %>"
-                        class="inline-block bg-black text-white px-6 py-3 hover:bg-[#c9a15f] hover:text-black transition">
-
-                        View Profile →
-
-                    </a>
-
-                </div>
-
                 <% }) %>
 
-        </div>
-        </section>
+            </div>
 
-        <section class="mt-24">
+        <% } %>
 
-            <div class="bg-black text-white text-center py-20 px-6">
+        <!-- Add Mentor Button -->
+        <% if (user && user.role === "admin") { %>
 
-                <h2 class="font-serif text-5xl mb-6">
-                    Become A Mentor
-                </h2>
+            <div class="flex justify-center mt-12">
 
-                <p class="max-w-2xl mx-auto text-gray-300 mb-10">
+                <a
+                    href="/admin/mentors/add"
+                    class="bg-[#c9a15f] text-black px-8 py-4 font-medium hover:bg-black hover:text-white transition">
 
-                    Passionate about teaching? Join our growing team of
-                    educators and inspire the next generation.
+                    <i class="fa-solid fa-plus mr-2"></i>
 
-                </p>
-
-                <a href="/enroll-tutor" class="bg-[#c9a15f] text-black px-10 py-4 inline-block">
-
-                    Apply Now →
+                    Add Mentor
 
                 </a>
 
             </div>
 
-        </section>
+        <% } %>
 
-        <%- include('../partials/footer') %>
+    </section>
+
+    <!-- Become Mentor Section -->
+
+    <section class="mt-24">
+
+        <div class="bg-black text-white text-center py-20 px-6">
+
+            <h2 class="font-serif text-5xl mb-6">
+                Become A Mentor
+            </h2>
+
+            <p class="max-w-2xl mx-auto text-gray-300 mb-10">
+
+                Passionate about teaching? Join our growing team of educators and inspire the next generation.
+
+            </p>
+
+            <a
+                href="/enroll-tutor"
+                class="bg-[#c9a15f] text-black px-10 py-4 inline-block hover:bg-white transition">
+
+                Apply Now →
+
+            </a>
+
+        </div>
+
+    </section>
+
+    <%- include('../partials/footer') %>
