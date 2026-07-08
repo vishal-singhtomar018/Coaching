@@ -54,7 +54,11 @@ const studentEnrollmentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-}
-);
+
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 module.exports = mongoose.model("StudentEnrollment", studentEnrollmentSchema);

@@ -57,7 +57,6 @@ exports.signup = async (req, res) => {
 
       return res.redirect("/");
     });
-
   } catch (err) {
     console.log(err);
     res.send("Something went wrong");
@@ -116,7 +115,9 @@ exports.logout = (req, res) => {
 
 exports.studentsPage = async (req, res) => {
   try {
-    const students = await Student.find().sort({
+    const students = await Student.find({
+      isDeleted: false,
+    }).sort({
       createdAt: -1,
     });
 
@@ -125,7 +126,6 @@ exports.studentsPage = async (req, res) => {
       students,
       user: req.session.user,
     });
-
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
@@ -134,7 +134,9 @@ exports.studentsPage = async (req, res) => {
 
 exports.tutorsPage = async (req, res) => {
   try {
-    const tutors = await Tutor.find().sort({
+    const tutors = await Tutor.find({
+      isDeleted: false,
+    }).sort({
       createdAt: -1,
     });
 
@@ -166,10 +168,11 @@ exports.messagesPage = async (req, res) => {
   }
 };
 
-
 exports.deleteStudent = async (req, res) => {
   try {
-    await Student.findByIdAndDelete(req.params.id);
+    await Student.findByIdAndUpdate(req.params.id, {
+      isDeleted: true,
+    });
 
     res.redirect("/admin/students");
   } catch (err) {
@@ -178,10 +181,11 @@ exports.deleteStudent = async (req, res) => {
   }
 };
 
-
 exports.deleteTutor = async (req, res) => {
   try {
-    await Tutor.findByIdAndDelete(req.params.id);
+    await Tutor.findByIdAndUpdate(req.params.id, {
+      isDeleted: true,
+    });
 
     res.redirect("/admin/tutors");
   } catch (err) {
@@ -189,7 +193,6 @@ exports.deleteTutor = async (req, res) => {
     res.status(500).send("Unable to delete tutor");
   }
 };
-
 
 exports.deleteMessage = async (req, res) => {
   try {
@@ -199,5 +202,52 @@ exports.deleteMessage = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Unable to delete message");
+  }
+};
+
+exports.searchStudents = async (req, res) => {
+  try {
+    const keyword = req.query.q || "";
+
+    const students = await Student.find({
+      studentName: {
+        $regex: keyword,
+        $options: "i",
+      },
+    }).sort({ createdAt: -1 });
+
+    
+    res.render("dashboard/Search", {
+      title: "Student Search",
+      students,
+      search: keyword,
+      user: req.session.user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.searchTutors = async (req, res) => {
+  try {
+    const keyword = req.query.q || "";
+
+    const tutors = await Tutor.find({
+      name: {
+        $regex: keyword,
+        $options: "i",
+      },
+    }).sort({ createdAt: -1 });
+
+    res.render("dashboard/tutor", {
+      title: "Tutor Search",
+      tutors,
+      search: keyword,
+      user: req.session.user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
   }
 };
