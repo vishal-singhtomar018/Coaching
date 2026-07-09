@@ -8,7 +8,6 @@ exports.mentorsPage = async (req, res) => {
     }).sort({
       createdAt: -1,
     });
-
     res.render("pages/mentors", {
       mentors,
       user: req.session.user,
@@ -18,6 +17,7 @@ exports.mentorsPage = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
 
 // Single mentor details page
 exports.mentorDetails = async (req, res) => {

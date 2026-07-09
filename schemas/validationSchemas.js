@@ -17,11 +17,11 @@ exports.studentEnrollmentSchema = Joi.object({
 
   board: Joi.string().allow(""),
 
-  medium: Joi.string().allow(""),
+  medium: Joi.string().trim().min(2).max(20).required(),
 
   duration: Joi.string().allow(""),
 
-  timeSlot: Joi.string().allow(""),
+  timeSlot: Joi.string().trim().min(2).max(30).required(),
 
   currentLocation: Joi.string().allow(""),
 
@@ -39,66 +39,47 @@ exports.studentEnrollmentSchema = Joi.object({
     .pattern(/^[6-9]\d{9}$/)
     .allow("")
     .messages({
-      "string.pattern.base":
-        "Student contact must be a valid 10-digit number",
+      "string.pattern.base": "Student contact must be a valid 10-digit number",
     }),
 
   parentContact: Joi.string()
     .pattern(/^[6-9]\d{9}$/)
     .required()
     .messages({
-      "string.pattern.base":
-        "Parent contact must be a valid 10-digit number",
-      "string.empty":
-        "Parent contact is required",
+      "string.pattern.base": "Parent contact must be a valid 10-digit number",
+      "string.empty": "Parent contact is required",
     }),
 
   whatsappNumber: Joi.string()
     .pattern(/^[6-9]\d{9}$/)
     .allow("")
     .messages({
-      "string.pattern.base":
-        "WhatsApp number must be a valid 10-digit number",
+      "string.pattern.base": "WhatsApp number must be a valid 10-digit number",
     }),
 
-  email: Joi.string()
-    .email()
-    .allow("")
-    .messages({
-      "string.email":
-        "Please enter a valid email address",
-    }),
+  email: Joi.string().email().allow("").messages({
+    "string.email": "Please enter a valid email address",
+  }),
 });
 
-
 exports.tutorEnrollmentSchema = Joi.object({
-  name: Joi.string()
-    .min(3)
-    .max(50)
-    .required()
-    .messages({
-      "string.empty": "Name is required",
-      "string.min": "Name must contain at least 3 characters",
-    }),
+  name: Joi.string().min(3).max(50).required().messages({
+    "string.empty": "Name is required",
+    "string.min": "Name must contain at least 3 characters",
+  }),
 
   gender: Joi.string().allow(""),
 
-  age: Joi.number()
-    .integer()
-    .min(18)
-    .max(70)
-    .messages({
-      "number.min": "Age must be at least 18",
-      "number.max": "Age cannot exceed 70",
-    }),
+  age: Joi.number().integer().min(18).max(70).messages({
+    "number.min": "Age must be at least 18",
+    "number.max": "Age cannot exceed 70",
+  }),
 
   maritalStatus: Joi.string().allow(""),
 
-  qualification: Joi.string()
-    .required()
-    .messages({
-      "string.empty": "Qualification is required",
-    }),
+  qualification: Joi.string().required().messages({
+    "string.empty": "Qualification is required",
+  }),
 
   preferredTime: Joi.string().allow(""),
 
@@ -106,17 +87,13 @@ exports.tutorEnrollmentSchema = Joi.object({
 
   experience: Joi.string().allow(""),
 
-  classesTeach: Joi.string()
-    .required()
-    .messages({
-      "string.empty": "Please specify classes you teach",
-    }),
+  classesTeach: Joi.string().required().messages({
+    "string.empty": "Please specify classes you teach",
+  }),
 
-  subjectExpertise: Joi.string()
-    .required()
-    .messages({
-      "string.empty": "Subject expertise is required",
-    }),
+  subjectExpertise: Joi.string().required().messages({
+    "string.empty": "Subject expertise is required",
+  }),
 
   expectedSalary: Joi.string().allow(""),
 
@@ -126,29 +103,21 @@ exports.tutorEnrollmentSchema = Joi.object({
 
   areaCover: Joi.string().allow(""),
 
-  address: Joi.string()
-    .required()
-    .messages({
-      "string.empty": "Address is required",
-    }),
+  address: Joi.string().required().messages({
+    "string.empty": "Address is required",
+  }),
 
   permanentAddress: Joi.string().allow(""),
 
-  email: Joi.string()
-    .email()
-    .allow("")
-    .messages({
-      "string.email":
-        "Please enter a valid email address",
-    }),
+  email: Joi.string().email().allow("").messages({
+    "string.email": "Please enter a valid email address",
+  }),
 
   contactNumber: Joi.string()
     .pattern(/^[6-9]\d{9}$/)
     .required()
     .messages({
-      "string.pattern.base":
-        "Please enter a valid 10-digit mobile number",
-      "string.empty":
-        "Contact number is required",
+      "string.pattern.base": "Please enter a valid 10-digit mobile number",
+      "string.empty": "Contact number is required",
     }),
 });

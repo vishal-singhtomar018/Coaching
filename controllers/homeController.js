@@ -202,7 +202,3 @@ exports.studentEnrollmentPage = (req, res) => {
     formData: {},
   });
 };
-
-
-
-

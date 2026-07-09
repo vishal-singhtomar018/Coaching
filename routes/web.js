@@ -7,6 +7,11 @@ const sendMail = require("../utils/sendMail");
 const { isLoggedIn } = require("../middleware/authMiddleware");
 const { isAdmin } = require("../middleware/adminMiddleware");
 const { isUser } = require("../middleware/userMiddleware");
+const StudentEnrollment = require("../models/StudentEnrollment");
+const TutorEnrollment = require("../models/TutorEnrollment");
+const message=require("../models/Contact");
+
+
 
 router.get("/", homeController.home);
 
@@ -38,7 +43,11 @@ router.post("/signup", authController.signup);
 
 router.get("/logout", authController.logout);
 
-router.get("/admin-dashboard", isLoggedIn, isAdmin, (req, res) => {
+router.get("/admin-dashboard", isLoggedIn, isAdmin,async (req, res) => {
+  const students=await StudentEnrollment.find();
+  const tutors= await TutorEnrollment.find();
+  const messages=await message.find();
+
   if (!req.session.user) {
     return res.redirect("/login");
   }
@@ -47,7 +56,7 @@ router.get("/admin-dashboard", isLoggedIn, isAdmin, (req, res) => {
     return res.redirect("/");
   }
 
-  res.render("dashboard/admin-dashboard");
+  res.render("dashboard/admin-dashboard",{students,tutors,messages});
 });
 
 router.get("/admin/students", isLoggedIn, authController.studentsPage);
