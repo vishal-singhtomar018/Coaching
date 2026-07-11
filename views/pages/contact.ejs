@@ -32,7 +32,7 @@
                             </p>
 
                             <!-- Contact Info -->
-                             
+
                             <div class="space-y-8">
 
                                 <div class="flex gap-4" data-aos="fade-up">
@@ -152,7 +152,7 @@
                                         <div id="error-message"
                                             class="bg-red-100 border border-red-400 text-red-700 px-5 py-4 rounded mb-6">
 
-                                                        Something went wrong. Please try again.
+                                            Something went wrong. Please try again.
 
                                         </div>
 
@@ -174,8 +174,9 @@
                                                 <% } %>
 
 
-                                                    <form action="/contact" method="POST"
-                                                        class="bg-white border border-gray-200 shadow-sm p-8 lg:p-10">
+                                                    <form class="bg-white border border-gray-200 shadow-sm p-8 lg:p-10 "
+                                                        action="<%= mentor ? `/mentors/${mentor._id}/contact` : '/contact' %>" method="POST">
+                                        
 
                                                         <h2 class="font-serif text-3xl mb-2">
                                                             Enrollment Inquiry

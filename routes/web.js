@@ -31,10 +31,11 @@ router.get("/enroll-tutor", isLoggedIn, homeController.tutorEnrollmentPage);
 router.post("/enroll-tutor", homeController.saveTutor);
 
 router.get("/testimonials", homeController.testimonials);
+router.get("/contact", contactController.contact);
+router.post("/contact", contactController.submitGeneralContact);
 
-router.get("/contact", contactController.contactPage);
-router.post("/contact", isLoggedIn, contactController.submitContact);
-
+router.get("/mentors/:id/contact",isLoggedIn ,contactController.contactPage);
+router.post("/mentors/:id/contact",isLoggedIn, contactController.submitContact);
 router.get("/login", authController.loginPage);
 router.get("/signup", authController.signupPage);
 

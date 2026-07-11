@@ -1,75 +1,37 @@
-
 <%- include('../partials/head') %>
-<%- include('../partials/navbar') %>
+    <%- include('../partials/navbar') %>
 
-<main class="max-w-4xl mx-auto py-16 px-6">
+        <main class="max-w-4xl mx-auto py-16 px-6">
 
-    <h1 class="text-4xl font-serif mb-8">
-        Add New Mentor
-    </h1>
+            <h1 class="text-4xl font-serif mb-8">
+                Add New Mentor
+            </h1>
 
-    <form
-        action="/admin/mentors/add"
-        method="POST"
-        enctype="multipart/form-data"
-        class="bg-white shadow border p-8 space-y-5"
-    >
+            <form action="/admin/mentors/add" method="POST" enctype="multipart/form-data"
+                class="bg-white shadow border p-8 space-y-5">
 
-        <input
-            type="text"
-            name="name"
-            placeholder="Mentor Name"
-            class="w-full border p-4"
-            required
-        >
+                <input type="text" name="name" placeholder="Mentor Name" class="w-full border p-4" required>
 
-        <input
-            type="text"
-            name="subject"
-            placeholder="Subject"
-            class="w-full border p-4"
-            required
-        >
+                <input type="text" name="subject" placeholder="Subject" class="w-full border p-4" required>
 
-        <input
-            type="text"
-            name="experience"
-            placeholder="Experience"
-            class="w-full border p-4"
-            required
-        >
+                <input type="text" name="experience" placeholder="Experience" class="w-full border p-4" required>
 
-        <input
-            type="text"
-            name="qualification"
-            placeholder="Qualification"
-            class="w-full border p-4"
-            required
-        >
+                <input type="text" name="qualification" placeholder="Qualification" class="w-full border p-4" required>
 
-        <textarea
-            name="description"
-            rows="5"
-            placeholder="Description"
-            class="w-full border p-4"
-            required
-        ></textarea>
+                <!-- Mentor Email -->
+                <input type="email" name="email" placeholder="Mentor Email" class="w-full border p-4" required>
 
-        <input
-            type="file"
-            name="image"
-            class="w-full border p-4"
-            required
-        >
+                <textarea name="description" rows="5" placeholder="Description" class="w-full border p-4"
+                    required></textarea>
 
-        <button
-            class="bg-black text-white px-8 py-4 hover:bg-[#c9a15f]"
-        >
-            Add Mentor
-        </button>
+                <input type="file" name="image" class="w-full border p-4" required>
 
-    </form>
+                <button class="bg-black text-white px-8 py-4 hover:bg-[#c9a15f] transition">
+                    Add Mentor
+                </button>
 
-</main>
+            </form> 
 
-<%- include('../partials/footer') %>
+        </main>
+
+        <%- include('../partials/footer') %>

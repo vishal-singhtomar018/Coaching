@@ -12,23 +12,17 @@ const contactSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      required:[true,"email is required"],
+      required: [true, "email is required"],
       trim: true,
       lowercase: true,
-      match: [
-        /^\S+@\S+\.\S+$/,
-        "Please enter a valid email address",
-      ],
+      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
     },
 
     phone: {
       type: String,
       required: [true, "Phone number is required"],
       trim: true,
-      match: [
-        /^[6-9]\d{9}$/,
-        "Please enter a valid 10-digit phone number",
-      ],
+      match: [/^[6-9]\d{9}$/, "Please enter a valid 10-digit phone number"],
     },
 
     message: {
@@ -36,12 +30,15 @@ const contactSchema = new mongoose.Schema(
       trim: true,
       maxlength: [500, "Message cannot exceed 500 characters"],
     },
+    mentor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Mentor",
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 module.exports =
-  mongoose.models.Contact ||
-  mongoose.model("Contact", contactSchema);
+  mongoose.models.Contact || mongoose.model("Contact", contactSchema);

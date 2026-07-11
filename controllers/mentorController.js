@@ -1,5 +1,5 @@
 const Mentor = require("../models/Mentor");
-
+const nodemailer = require("nodemailer");
 // All mentors page
 exports.mentorsPage = async (req, res) => {
   try {
@@ -17,7 +17,6 @@ exports.mentorsPage = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
-
 
 // Single mentor details page
 exports.mentorDetails = async (req, res) => {
@@ -59,6 +58,7 @@ exports.addMentor = async (req, res) => {
       name: req.body.name,
       subject: req.body.subject,
       experience: req.body.experience,
+      email: req.body.email,
       qualification: req.body.qualification,
       description: req.body.description,
       image: {

@@ -46,6 +46,7 @@ exports.signup = async (req, res) => {
     req.session.user = {
       id: user._id,
       role: user.role,
+      email: user.email,
       name: user.name,
     };
 
@@ -83,6 +84,7 @@ exports.login = async (req, res) => {
     req.session.user = {
       id: user._id,
       role: user.role,
+       email: user.email,
       name: user.name,
     };
 
@@ -195,7 +197,6 @@ exports.deleteTutor = async (req, res) => {
   }
 };
 exports.DeleteMentor = async (req, res) => {
-  console.log("hit delete route")
   try {
     await Mentor.findByIdAndUpdate(req.params.id, {
       isDeleted: true,

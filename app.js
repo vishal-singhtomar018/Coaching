@@ -9,7 +9,6 @@ const session = require("express-session");
 const User = require("./models/User");
 const { MongoStore } = require("connect-mongo");
 
-
 connectDB();
 const app = express();
 
@@ -50,7 +49,6 @@ app.use(
 
 app.use(async (req, res, next) => {
   res.locals.user = req.session.user || null;
-
   res.locals.adminExists = await User.exists({
     role: "admin",
   });

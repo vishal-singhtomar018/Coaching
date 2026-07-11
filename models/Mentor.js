@@ -4,6 +4,10 @@ const mentorSchema = new mongoose.Schema(
   {
     name: String,
     subject: String,
+    email: {
+      type: String,
+      required: true,
+    },
     image: {
       url: String,
       filename: String,

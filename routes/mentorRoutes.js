@@ -9,7 +9,7 @@ const { isAdmin } = require("../middleware/adminMiddleware");
 // All mentors
 router.get("/mentors", mentorController.mentorsPage);
 
-router.get("/mentors/:id",isLoggedIn, isAdmin, mentorController.mentorDetails);
+router.get("/mentors/:id",isLoggedIn, mentorController.mentorDetails);
 
 router.get("/join-tutor", mentorController.joinTutorPage);
 
