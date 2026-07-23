@@ -1,0 +1,568 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/navbar') %>
+
+        <section class="bg-[#f8f7f5] min-h-screen pt-32 pb-20">
+
+            <div class="max-w-7xl mx-auto px-6">
+
+                <!-- ========================= -->
+                <!-- HEADER -->
+                <!-- ========================= -->
+
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12">
+
+                    <div>
+
+                        <h1 class="font-serif text-5xl">
+
+                            Welcome,
+                            <span class="text-[#c9a15f]">
+                                <%= tutor.name %>
+                            </span>
+
+                            👋
+
+                        </h1>
+
+                        <p class="text-gray-500 mt-3 text-lg">
+
+                            Manage your students, classes and academic activities.
+
+                        </p>
+
+                    </div>
+
+                    <div class="bg-white shadow rounded-xl px-8 py-5">
+
+                        <p class="text-sm uppercase tracking-wider text-gray-400">
+
+                            Status
+
+                        </p>
+
+                        <h2 class="text-2xl font-semibold text-green-600">
+
+                            <%= tutor.status || "Approved Tutor" %>
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+                <!-- ========================= -->
+                <!-- STATS -->
+                <!-- ========================= -->
+
+                <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8 mb-16">
+
+                    <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-8">
+
+                        <div class="flex justify-between">
+
+                            <div>
+
+                                <h2 class="text-5xl font-serif text-[#c9a15f]">
+
+                                    <%= students.length %>
+
+                                </h2>
+
+                                <p class="mt-3 text-gray-500">
+
+                                    Assigned Students
+
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-user-graduate text-4xl text-[#c9a15f]"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-8">
+
+                        <div class="flex justify-between">
+
+                            <div>
+
+                                <h2 class="text-5xl font-serif text-[#c9a15f]">
+
+                                    0
+
+                                </h2>
+
+                                <p class="mt-3 text-gray-500">
+
+                                    Homework
+
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-book text-4xl text-[#c9a15f]"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-8">
+
+                        <div class="flex justify-between">
+
+                            <div>
+
+                                <h2 class="text-5xl font-serif text-[#c9a15f]">
+
+                                    0
+
+                                </h2>
+
+                                <p class="mt-3 text-gray-500">
+
+                                    Attendance
+
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-calendar-check text-4xl text-[#c9a15f]"></i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-8">
+
+                        <div class="flex justify-between">
+
+                            <div>
+
+                                <h2 class="text-5xl font-serif text-[#c9a15f]">
+
+                                    0
+
+                                </h2>
+
+                                <p class="mt-3 text-gray-500">
+
+                                    Notifications
+
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-bell text-4xl text-[#c9a15f]"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ========================= -->
+                <!-- PROFILE + SCHEDULE -->
+                <!-- ========================= -->
+
+                <div class="grid lg:grid-cols-3 gap-8 mb-16">
+
+                    <!-- Tutor Profile -->
+
+                    <div class="bg-white rounded-xl shadow p-8">
+
+                        <h2 class="font-serif text-3xl mb-8">
+
+                            Tutor Profile
+
+                        </h2>
+
+                        <div class="space-y-4">
+
+                            <div>
+
+                                <p class="text-gray-400 text-sm">
+
+                                    Name
+
+                                </p>
+
+                                <h3 class="font-semibold text-lg">
+
+                                    <%= tutor.name %>
+
+                                </h3>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-gray-400 text-sm">
+
+                                    Email
+
+                                </p>
+
+                                <h3>
+
+                                    <%= tutor.email %>
+
+                                </h3>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-gray-400 text-sm">
+
+                                    Contact
+
+                                </p>
+
+                                <h3>
+
+                                    <%= tutor.contactNumber %>
+
+                                </h3>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-gray-400 text-sm">
+
+                                    Qualification
+
+                                </p>
+
+                                <h3>
+
+                                    <%= tutor.qualification %>
+
+                                </h3>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-gray-400 text-sm">
+
+                                    Experience
+
+                                </p>
+
+                                <h3>
+
+                                    <%= tutor.experience %>
+
+                                </h3>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-gray-400 text-sm">
+
+                                    Subject Expertise
+
+                                </p>
+
+                                <h3>
+
+                                    <%= tutor.subjectExpertise %>
+
+                                </h3>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-gray-400 text-sm">
+
+                                    Expected Salary
+
+                                </p>
+
+                                <h3>
+
+                                    ₹ <%= tutor.expectedSalary %>
+
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Today's Schedule -->
+
+                    <div class="bg-white rounded-xl shadow p-8">
+
+                        <h2 class="font-serif text-3xl mb-8">
+
+                            Today's Schedule
+
+                        </h2>
+
+                        <div class="flex flex-col items-center justify-center h-[320px]">
+
+                            <i class="fa-regular fa-calendar text-7xl text-[#c9a15f] mb-6"></i>
+
+                            <h3 class="text-2xl font-semibold">
+
+                                No Classes Today
+
+                            </h3>
+
+                            <p class="text-gray-500 mt-2 text-center">
+
+                                Upcoming class scheduling will appear here.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Quick Actions -->
+
+                    <!-- Quick Actions -->
+
+                    <div class="bg-white rounded-xl shadow p-8">
+
+                        <h2 class="font-serif text-3xl mb-8">
+
+                            Quick Actions
+
+                        </h2>
+
+                        <div class="grid gap-4">
+
+                            <a href="/tutor/notes"
+                                class="bg-gray-200 hover:bg-[#c9a15f] hover:text-white py-4 rounded-lg text-center text-gray-700 transition">
+
+                                📚 Upload Notes
+                                <br>
+
+                                <span class="text-sm">
+
+                                    Manage Study Material
+
+                                </span>
+
+                            </a>
+
+                            <a href="/tutor/attendance"
+                                class="bg-gray-200 hover:bg-[#c9a15f] hover:text-white py-4 rounded-lg text-center text-gray-700 transition">
+
+                                📅 Attendance
+
+                                <br>
+
+                                <span class="text-sm">
+
+                                    Mark Student Attendance
+
+                                </span>
+
+                            </a>
+
+                            <a href="/tutor/homework"
+                                class="bg-gray-200 hover:bg-[#c9a15f] hover:text-white py-4 rounded-lg text-center text-gray-700 transition">
+
+                                📝 Homework
+
+                                <br>
+
+                                <span class="text-sm">
+
+                                    Assign Homework
+
+                                </span>
+
+                            </a>
+
+                            <a href="/tutor/tests"
+                                class="bg-gray-200 hover:bg-[#c9a15f] hover:text-white py-4 rounded-lg text-center text-gray-700 transition">
+
+                                📖 Tests
+
+                                <br>
+
+                                <span class="text-sm">
+
+                                    Create & Manage Tests
+
+                                </span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ========================= -->
+                <!-- ASSIGNED STUDENTS -->
+                <!-- ========================= -->
+
+                <div class="mb-16">
+
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+
+                        <div>
+
+                            <h2 class="font-serif text-4xl">
+
+                                Assigned Students
+
+                            </h2>
+
+                            <p class="text-gray-500 mt-2">
+
+                                Students currently assigned to you.
+
+                            </p>
+
+                        </div>
+
+                        <span class="bg-[#c9a15f] text-white px-5 py-2 rounded-full">
+
+                            <%= students.length %> Students
+
+                        </span>
+
+                    </div>
+
+                    <% if(students.length===0){ %>
+
+                        <div class="bg-white rounded-xl shadow p-16 text-center">
+
+                            <i class="fa-solid fa-user-graduate text-7xl text-[#c9a15f] mb-6"></i>
+
+                            <h2 class="font-serif text-3xl">
+
+                                No Students Assigned
+
+                            </h2>
+
+                            <p class="text-gray-500 mt-4">
+
+                                Your assigned students will appear here.
+
+                            </p>
+
+                        </div>
+
+                        <% }else{ %>
+
+                            <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+                                <% students.forEach(student=>{ %>
+
+                                    <div class="bg-white rounded-xl shadow hover:shadow-xl transition p-6">
+
+                                        <div class="flex justify-between items-start">
+
+                                            <div>
+
+                                                <h3 class="font-serif text-2xl">
+
+                                                    <%= student.studentName %>
+
+                                                </h3>
+
+                                                <p class="text-gray-500">
+
+                                                    Class <%= student.class %>
+
+                                                </p>
+
+                                            </div>
+
+                                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs">
+
+                                                Active
+
+                                            </span>
+
+                                        </div>
+
+                                        <div class="space-y-3 mt-6">
+
+                                            <p>
+
+                                                <i class="fa-solid fa-book-open text-[#c9a15f] w-6"></i>
+
+                                                <strong>Subject:</strong>
+
+                                                <%= student.subject %>
+
+                                            </p>
+
+                                            <p>
+
+                                                <i class="fa-solid fa-user text-[#c9a15f] w-6"></i>
+
+                                                <strong>Parent:</strong>
+
+                                                <%= student.parentName %>
+
+                                            </p>
+
+                                            <p>
+
+                                                <i class="fa-solid fa-phone text-[#c9a15f] w-6"></i>
+
+                                                <strong>Contact:</strong>
+
+                                                <%= student.parentContact %>
+
+                                            </p>
+
+                                            <p>
+
+                                                <i class="fa-solid fa-location-dot text-[#c9a15f] w-6"></i>
+
+                                                <strong>Location:</strong>
+
+                                                <%= student.currentLocation %>
+
+                                            </p>
+
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-3 mt-8">
+
+                                            <a href="/tutor/student/<%= student._id %>"
+                                                class="bg-[#c9a15f] hover:bg-[#b88f4d] text-white text-center py-3 rounded-lg">
+
+                                                <i class="fa-solid fa-eye mr-2"></i>
+
+                                                View
+
+                                            </a>
+
+                                            <a href="/tutor/student/<%= student._id %>/attendance"
+                                                class="border hover:bg-gray-100 text-center py-3 rounded-lg">
+
+                                                <i class="fa-solid fa-calendar-check mr-2"></i>
+
+                                                Attendance
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <% }) %>
+
+                            </div>
+
+                            <% } %>
+
+                </div>

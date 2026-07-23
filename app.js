@@ -5,6 +5,7 @@ const connectDB = require("./config/db");
 // const adminRoutes = require("./routes/admin");
 // const userRoutes = require("./routes/user");
 const mentorRoutes = require("./routes/mentorRoutes");
+const tutorRoutes = require("./routes/tutor");
 const session = require("express-session");
 const User = require("./models/User");
 const { MongoStore } = require("connect-mongo");
@@ -65,6 +66,7 @@ app.locals.site = {
 
 app.use("/", require("./routes/web"));
 app.use("/", mentorRoutes);
+app.use("/tutor", tutorRoutes);
 const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV !== "production") {

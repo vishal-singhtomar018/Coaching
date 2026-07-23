@@ -1,5 +1,7 @@
 const Mentor = require("../models/Mentor");
 const nodemailer = require("nodemailer");
+const Tutor=require("../models/TutorEnrollment")
+const StudentEnrollment=require("../models/StudentEnrollment");
 // All mentors page
 exports.mentorsPage = async (req, res) => {
   try {
@@ -73,3 +75,26 @@ exports.addMentor = async (req, res) => {
     res.redirect("/admin/mentors/add");
   }
 };
+
+
+exports.pendingTutorsPage = async (req, res) => {
+  try {
+    const tutors = await Tutor.find({
+      isDeleted: false,
+      status: "pending",
+    }).sort({
+      createdAt: -1,
+    });
+
+    res.render("dashboard/pending-tutors", {
+      title: "Pending Tutor Requests",
+      tutors,
+      user: req.session.user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+

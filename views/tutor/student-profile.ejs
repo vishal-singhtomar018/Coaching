@@ -1,0 +1,212 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<section class="bg-[#f8f7f5] min-h-screen pt-32 pb-20">
+
+<div class="max-w-7xl mx-auto px-6">
+
+    <!-- Header -->
+
+    <div class="flex justify-between items-center mb-12">
+
+        <div>
+
+            <h1 class="font-serif text-5xl">
+
+                <%= student.studentName %>
+
+            </h1>
+
+            <p class="text-gray-500 mt-3">
+
+                Student Profile
+
+            </p>
+
+        </div>
+
+        <a
+        href="/tutor/dashboard"
+        class="bg-black text-white px-6 py-3 rounded hover:bg-[#c9a15f]">
+
+            ← Back
+
+        </a>
+
+    </div>
+
+    <!-- Student + Parent -->
+
+    <div class="grid lg:grid-cols-2 gap-8 mb-10">
+
+        <!-- Student -->
+
+        <div class="bg-white shadow rounded-xl p-8">
+
+            <h2 class="font-serif text-3xl mb-6">
+
+                Student Information
+
+            </h2>
+
+            <div class="space-y-4">
+
+                <p><strong>Name :</strong> <%= student.studentName %></p>
+
+                <p><strong>Class :</strong> <%= student.class %></p>
+
+                <p><strong>Subject :</strong> <%= student.subject %></p>
+
+                <p><strong>School :</strong> <%= student.school %></p>
+
+                <p><strong>Board :</strong> <%= student.board %></p>
+
+                <p><strong>Medium :</strong> <%= student.medium %></p>
+
+                <p><strong>Duration :</strong> <%= student.duration %></p>
+
+                <p><strong>Time Slot :</strong> <%= student.timeSlot %></p>
+
+                <p><strong>Location :</strong> <%= student.currentLocation %></p>
+
+                <p><strong>Landmark :</strong> <%= student.landmark %></p>
+
+            </div>
+
+        </div>
+
+        <!-- Parent -->
+
+        <div class="bg-white shadow rounded-xl p-8">
+
+            <h2 class="font-serif text-3xl mb-6">
+
+                Parent Information
+
+            </h2>
+
+            <div class="space-y-4">
+
+                <p><strong>Parent :</strong> <%= student.parentName %></p>
+
+                <p><strong>Occupation :</strong> <%= student.parentOccupation %></p>
+
+                <p><strong>Student Contact :</strong> <%= student.studentContact %></p>
+
+                <p><strong>Parent Contact :</strong> <%= student.parentContact %></p>
+
+                <p><strong>Whatsapp :</strong> <%= student.whatsappNumber %></p>
+
+                <p><strong>Email :</strong> <%= student.email %></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Tutor -->
+
+    <div class="bg-white shadow rounded-xl p-8 mb-10">
+
+        <h2 class="font-serif text-3xl mb-6">
+
+            Assigned Tutor
+
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-5">
+
+            <p><strong>Name :</strong> <%= tutor.name %></p>
+
+            <p><strong>Email :</strong> <%= tutor.email %></p>
+
+            <p><strong>Phone :</strong> <%= tutor.contactNumber %></p>
+
+            <p><strong>Qualification :</strong> <%= tutor.qualification %></p>
+
+            <p><strong>Experience :</strong> <%= tutor.experience %></p>
+
+            <p><strong>Subjects :</strong> <%= tutor.subjectExpertise %></p>
+
+        </div>
+
+    </div>
+
+    <!-- Modules -->
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+        <div class="bg-white shadow rounded-xl p-8">
+
+            <h3 class="text-2xl font-serif mb-3">
+
+                Attendance
+
+            </h3>
+
+            <p class="text-gray-500 mb-6">
+
+                Track attendance.
+
+            </p>
+
+            <button class="bg-[#c9a15f] text-white w-full py-3 rounded">
+
+                Open
+
+            </button>
+
+        </div>
+
+        <div class="bg-white shadow rounded-xl p-8">
+
+            <h3 class="text-2xl font-serif mb-3">
+
+                Homework
+
+            </h3>
+
+            <p class="text-gray-500 mb-6">
+
+                Assign homework.
+
+            </p>
+
+            <button class="bg-[#c9a15f] text-white w-full py-3 rounded">
+
+                Open
+
+            </button>
+
+        </div>
+
+        <div class="bg-white shadow rounded-xl p-8">
+
+            <h3 class="text-2xl font-serif mb-3">
+
+                Tests
+
+            </h3>
+
+            <p class="text-gray-500 mb-6">
+
+                Manage tests.
+
+            </p>
+
+            <button class="bg-[#c9a15f] text-white w-full py-3 rounded">
+
+                Open
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+<%- include('../partials/footer') %>

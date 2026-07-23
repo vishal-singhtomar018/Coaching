@@ -34,6 +34,11 @@ const contactSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Mentor",
     },
+    status: {
+      type: String,
+      enum: ["new", "in-progress", "replied", "closed"],
+      default: "new",
+    },
   },
   {
     timestamps: true,

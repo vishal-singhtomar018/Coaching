@@ -1,122 +1,246 @@
 <%- include('../partials/head') %>
-
     <%- include('../partials/navbar') %>
-       <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
 
-            <h1 class="font-serif text-3xl md:text-5xl mb-8 md:mb-10">
-                Student Enrollments
-            </h1>
+        <section class="bg-[#f8f7f5] min-h-screen pt-32 pb-20">
 
-            <% if (students.length===0) { %>
+            <div class="max-w-7xl mx-auto px-6">
 
-                <p class="text-gray-500">
-                    No students enrolled yet.
-                </p>
+                <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-10">
 
-                <% } else { %>
+                    <div>
 
-                    <div class="flex justify-center my-10">
+                        <h1 class="font-serif text-5xl">
+                            Student Enrollments
+                        </h1>
 
-                        <form action="/admin/students/search" method="GET"
-                            class="flex items-center bg-white border border-gray-300 rounded-full shadow-md overflow-hidden w-full max-w-xl">
-
-                            <span class="pl-5 text-gray-500">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </span>
-
-                            <input type="text" name="q" placeholder="Search Student"
-                                class="flex-1 px-4 py-3 outline-none text-gray-700 placeholder-gray-400">
-
-                            <button type="submit"
-                                class="bg-black hover:bg-[#c9a15f] hover:text-black text-white px-6 py-3 transition duration-300">
-
-                                Search
-
-                            </button>
-
-                        </form>
+                        <p class="text-gray-500 mt-2">
+                            Manage all enrolled students.
+                        </p>
 
                     </div>
-                    <div class="overflow-x-auto rounded-lg border shadow bg-white">
 
-                        <table class="min-w-[700px] w-full">
+                    <div class="bg-[#c9a15f] text-white px-6 py-3 rounded-xl mt-6 md:mt-0">
 
-                            <thead class="bg-black text-white">
+                        <span class="font-semibold">
 
-                                <tr>
+                            Total Students :
 
-                                    <th class="p-3 md:p-4 text-left whitespace-nowrap">
-                                        Name
-                                    </th>
+                        </span>
 
-                                    <th class="p-3 md:p-4 text-left whitespace-nowrap">
-                                        Email
-                                    </th>
+                        <%= students.length %>
 
-                                    <th class="p-3 md:p-4 text-left whitespace-nowrap">
-                                        Phone
-                                    </th>
+                    </div>
 
-                                    <th class="p-3 md:p-4 text-left whitespace-nowrap">
-                                        Class
-                                    </th>
+                </div>
 
-                                    <th class="p-3 md:p-4 text-center whitespace-nowrap">
-                                        Action
-                                    </th>
+                <!-- Search -->
 
-                                </tr>
+                <div class="flex justify-center mb-14">
 
-                            </thead>
+                    <form action="/admin/students/search" method="GET"
+                        class="flex items-center bg-white rounded-full shadow-lg overflow-hidden border w-full max-w-2xl">
 
-                            <tbody>
+                        <span class="px-5 text-gray-500">
 
-                                <% students.forEach(student=> { %>
+                            <i class="fa-solid fa-magnifying-glass"></i>
 
-                                    <tr class="border-b hover:bg-gray-50 transition">
+                        </span>
 
-                                        <td class="p-3 md:p-4 whitespace-nowrap">
-                                            <%= student.studentName %>
-                                        </td>
+                        <input type="text" name="q" placeholder="Search Student..." class="flex-1 py-4 outline-none">
 
-                                        <td class="p-3 md:p-4 whitespace-nowrap text-sm">
-                                            <%= student.email %>
-                                        </td>
+                        <button class="bg-black text-white px-8 py-4 hover:bg-[#c9a15f] hover:text-black transition">
 
-                                        <td class="p-3 md:p-4 whitespace-nowrap">
-                                            <%= student.studentContact %>
-                                        </td>
+                            Search
 
-                                        <td class="p-3 md:p-4 whitespace-nowrap">
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <% if(students.length===0){ %>
+
+                    <div class="flex justify-center items-center min-h-[45vh]">
+
+                        <div class="bg-white rounded-2xl shadow-lg p-12 text-center max-w-lg w-full">
+
+                            <i class="fa-solid fa-user-graduate text-7xl text-[#c9a15f] mb-6"></i>
+
+                            <h2 class="text-3xl font-serif mb-3">
+
+                                No Students Found
+
+                            </h2>
+
+                            <p class="text-gray-500">
+
+                                Students will appear here after enrollment.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <% } else { %>
+
+                        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+                            <% students.forEach(student=>{ %>
+
+                                <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden">
+
+                                    <!-- Header -->
+
+                                    <div class="bg-[#c9a15f] p-6 text-white flex justify-between items-center">
+
+                                        <div class="flex items-center gap-4">
+
+                                            <div
+                                                class="w-16 h-16 rounded-full bg-white text-[#c9a15f] flex items-center justify-center text-2xl font-bold">
+
+                                                <%= student.studentName.charAt(0).toUpperCase() %>
+
+                                            </div>
+
+                                            <div>
+
+                                                <h2 class="text-2xl font-semibold">
+
+                                                    <%= student.studentName %>
+
+                                                </h2>
+
+                                                <p>
+
+                                                    Student
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+
+                                            Active
+
+                                        </span>
+
+                                    </div>
+
+                                    <!-- Body -->
+
+                                    <div class="p-6 space-y-4">
+
+                                        <p>
+
+                                            <i class="fa-solid fa-book text-[#c9a15f] mr-2"></i>
+
+                                            <strong>Subject:</strong>
+
+                                            <%= student.subject %>
+
+                                        </p>
+
+                                        <p>
+
+                                            <i class="fa-solid fa-school text-[#c9a15f] mr-2"></i>
+
+                                            <strong>Class:</strong>
+
                                             <%= student.class %>
-                                        </td>
 
-                                        <td class="p-3 md:p-4 text-center">
+                                        </p>
 
-                                            <form action="/admin/students/<%= student._id %>/delete" method="POST"
-                                                onsubmit="return confirm('Delete this student?')">
+                                        <p>
 
-                                                <button class="text-red-600 hover:text-red-800 text-lg">
+                                            <i class="fa-solid fa-envelope text-[#c9a15f] mr-2"></i>
 
-                                                    <i class="fa-solid fa-trash"></i>
+                                            <%= student.email %>
 
-                                                </button>
+                                        </p>
 
-                                            </form>
+                                        <p>
 
-                                        </td>
+                                            <i class="fa-solid fa-phone text-[#c9a15f] mr-2"></i>
 
-                                    </tr>
+                                            <%= student.studentContact %>
 
-                                    <% }) %>
+                                        </p>
 
-                            </tbody>
+                                        <p>
 
-                        </table>
+                                            <i class="fa-solid fa-location-dot text-[#c9a15f] mr-2"></i>
 
-                    </div>
+                                            <%= student.currentLocation %>
 
-                    <% } %>
+                                        </p>
+
+                                    </div>
+
+                                    <!-- Footer -->
+
+                                    <div class="border-t p-5 flex gap-3">
+
+                                        <form action="/admin/students/<%= student._id %>/delete" method="POST"
+                                            class="flex-1" onsubmit="return confirm('Delete this student?')">
+
+                                            <button
+                                                class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl transition">
+
+                                                <i class="fa-solid fa-trash mr-2"></i>
+
+                                                Remove
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                    <form action="/admin/students/<%= student._id %>/assign-tutor" method="POST"
+                                        class="mt-4">
+
+                                        <select name="tutorId" class="border rounded px-3 py-2 w-full">
+
+                                            <option value="">
+                                                Select Tutor
+                                            </option>
+
+                                            <% tutors.forEach(tutor=>{ %>
+
+                                                <option value="<%= tutor._id %>" <%=student.assignedTutor &&
+                                                    student.assignedTutor._id.toString()===tutor._id.toString()
+                                                    ? "selected" : "" %>>
+
+                                                    <%= tutor.name %>
+
+                                                </option>
+
+                                                <% }) %>
+
+                                        </select>
+
+                                        <button
+                                            class="mt-3 w-full bg-[#c9a15f] hover:bg-[#b88f4d] text-white py-2 rounded">
+
+                                            Assign Tutor
+
+                                        </button>
+
+                                    </form>
+
+
+                                </div>
+
+                                <% }) %>
+
+                        </div>
+
+                        <% } %>
+
+            </div>
 
         </section>
 

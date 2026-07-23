@@ -1,60 +1,49 @@
 <%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
 
-    <%- include('../partials/navbar') %>
-        <section class="min-h-screen flex justify-center items-center bg-[#f8f7f5]">
+<section class="min-h-screen flex justify-center items-center bg-[#f8f7f5]">
+    <form action="/signup" method="POST" class="bg-white p-10 shadow-xl w-[450px] rounded-lg">
 
-            <form action="/signup" method="POST" class="bg-white p-10 shadow-xl w-[450px] rounded-lg">
+        <h1 class="font-serif text-4xl mb-8 text-center">
+            Signup
+        </h1>
 
-                <h1 class="font-serif text-4xl mb-8 text-center">
-                    Signup
-                </h1>
+        <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            class="w-full border p-4 mb-5 rounded"
+            required>
 
-                <select name="role" class="w-full border p-4 mb-5 rounded" required>
+        <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            class="w-full border p-4 mb-5 rounded"
+            required>
 
-                    <option value="user">
-                        Signup as User
-                    </option>
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            class="w-full border p-4 mb-5 rounded"
+            required>
 
-                    <% if (!adminExists) { %>
+        <button
+            type="submit"
+            class="w-full bg-black text-white py-4 hover:bg-[#c9a15f] hover:text-black transition rounded">
 
-                        <option value="admin">
-                            Signup as Admin
-                        </option>
+            Signup
 
-                        <% } else { %>
+        </button>
 
-                            <option value="" disabled>
-                                Admin (Already Registered)
-                            </option>
+        <p class="mt-6 text-center">
+            Already have an account?
 
-                            <% } %>
+            <a href="/login" class="text-[#c9a15f] font-medium">
+                Login
+            </a>
+        </p>
 
-                </select>
-
-                <input type="text" name="name" placeholder="Name" class="w-full border p-4 mb-5 rounded" required>
-
-                <input type="email" name="email" placeholder="Email" class="w-full border p-4 mb-5 rounded" required>
-
-                <input type="password" name="password" placeholder="Password" class="w-full border p-4 mb-5 rounded"
-                    required>
-
-                <button type="submit"
-                    class="w-full bg-black text-white py-4 hover:bg-[#c9a15f] hover:text-black transition rounded">
-
-                    Signup
-
-                </button>
-
-                <p class="mt-6 text-center">
-                    Already have an account?
-
-                    <a href="/login" class="text-[#c9a15f] font-medium">
-
-                        Login
-
-                    </a>
-                </p>
-
-            </form>
-
-        </section>
+    </form>
+</section>

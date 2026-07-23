@@ -1,0 +1,34 @@
+<% if (!user) { %>
+
+    <a href="/login"
+        class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-[#c9a15f] hover:text-white transition">
+
+        <i class="fa-solid fa-right-to-bracket"></i>
+
+    </a>
+
+    <a href="/signup"
+        class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-[#c9a15f] hover:text-white transition">
+
+        <i class="fa-solid fa-user-plus"></i>
+
+    </a>
+
+    <% } else { %>
+
+        <span class="text-sm text-gray-600 hidden lg:block">
+
+            Hi, <%= user.name %>
+
+        </span>
+
+        <%- include("dashboard-link") %>
+
+            <a href="/logout"
+                class="w-10 h-10 flex items-center justify-center rounded-full border text-red-500 hover:bg-red-500 hover:text-white transition">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+            </a>
+
+            <% } %>

@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^1.41.3",
     "connect-mongo": "^6.0.0",
@@ -13,6 +14,7 @@
     "ejs": "^3.1.10",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "generate-password": "^1.7.1",
     "joi": "^18.2.3",
     "mongoose": "^9.7.1",
     "multer": "^2.2.0",

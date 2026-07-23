@@ -1,239 +1,130 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6">
+<nav class="bg-white shadow sticky top-0 z-50">
 
-    <div class="flex items-center justify-between h-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-        <!-- Logo -->
-        <a href="/" class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center justify-between h-20">
 
-            <div class="w-10 h-10 bg-[#c9a15f] flex items-center justify-center">
-                <img src="../images/hero.png" alt="">
+            <!-- Logo -->
+            <a href="/" class="flex items-center gap-3 shrink-0">
+
+                <div class="w-10 h-10 bg-[#c9a15f] flex items-center justify-center">
+                    <img src="/images/hero.png" alt="">
+                </div>
+
+                <div class="leading-tight">
+
+                    <h3 class="font-serif text-lg sm:text-xl whitespace-nowrap">
+                        PERFECT HOME
+                    </h3>
+
+                    <p class="text-[#c9a15f] ml-6 text-lg whitespace-nowrap">
+                        TUTOR
+                    </p>
+
+                </div>
+
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-8">
+
+                <a href="/" class="hover:text-[#c9a15f] transition">
+                    Home
+                </a>
+
+                <a href="/subjects" class="hover:text-[#c9a15f] transition">
+                    Subjects
+                </a>
+
+                <a href="/mentors" class="hover:text-[#c9a15f] transition">
+                    Mentors
+                </a>
+
+                <a href="/about" class="hover:text-[#c9a15f] transition">
+                    About
+                </a>
+
+                <a href="/contact" class="hover:text-[#c9a15f] transition">
+                    Contact
+                </a>
+
+                <!-- Login / Dashboard / Logout -->
+                <%- include("auth-links") %>
+
+                <!-- Enrollment Dropdown -->
+                <%- include("enroll-menu") %>
+
             </div>
 
-            <div class="leading-tight">
-                <h3 class="font-serif text-lg sm:text-xl whitespace-nowrap">
-                    PERFECT HOME
-                </h3>
-                <p class="text-[#c9a15f] ml-6 text-lg whitespace-nowrap">
-                    TUTOR
+            <!-- Mobile Menu Button -->
+            <button id="menuBtn" class="md:hidden text-3xl">
+
+                ☰
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t shadow-lg">
+
+        <div class="flex flex-col gap-5 p-6">
+
+            <a href="/">Home</a>
+
+            <a href="/subjects">Subjects</a>
+
+            <a href="/mentors">Mentors</a>
+
+            <a href="/about">About</a>
+
+            <a href="/contact">Contact</a>
+
+            <%- include("mobile-auth") %>
+
+            <div class="border-t pt-4">
+
+                <p class="text-xs uppercase tracking-wider text-gray-500 mb-3">
+                    Enrollment
                 </p>
-            </div>
-        </a>
 
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center gap-8">
+                <a href="/enroll-student"
+                    class="block bg-[#c9a15f] text-center py-3 font-medium mb-3">
 
-            <a href="/" class="hover:text-[#c9a15f] transition">
-                Home
-            </a>
+                    🎓 Student Enrollment
 
-            <a href="/subjects" class="hover:text-[#c9a15f] transition">
-                Subjects
-            </a>
-            <a href="/mentors" class="hover:text-[#c9a15f] transition ">
-                Mentors
-            </a>
+                </a>
 
-            <a href="/about" class="hover:text-[#c9a15f] transition">
-                About
-            </a>
+                <a href="/enroll-tutor"
+                    class="block border border-[#c9a15f] text-center py-3 font-medium">
 
-            <a href="/contact" class="hover:text-[#c9a15f] transition">
-                Contact
-            </a>
+                    👨‍🏫 Tutor Registration
 
-            <div class="flex items-center gap-3">
+                </a>
 
-                <% if (!user) { %>
-
-                    <a href="/login"
-                        class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-[#c9a15f] hover:text-white transition">
-
-                        <i class="fa-solid fa-right-to-bracket"></i>
-
-                    </a>
-
-                    <a href="/signup"
-                        class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-[#c9a15f] hover:text-white transition">
-
-                        <i class="fa-solid fa-user-plus"></i>
-
-                    </a>
-
-                    <% } else { %>
-
-                        <span class="text-sm text-gray-600 hidden lg:block">
-                            Hi, <%= user.name %>
-                        </span>
-
-                        <% if (user.role==="admin" ) { %>
-
-                            <a href="/admin-dashboard"
-                                class="px-4 py-2 border rounded hover:bg-[#c9a15f] hover:text-white transition">
-
-                                Dashboard
-
-                            </a>
-
-
-
-                                <% } %>
-
-                                    <a href="/logout"
-                                        class="w-10 h-10 flex items-center justify-center rounded-full border text-red-500 hover:bg-red-500 hover:text-white transition">
-
-                                        <i class="fa-solid fa-right-from-bracket"></i>
-
-                                    </a>
-
-                                    <% } %>
-
-            </div>
-
-            <!-- Enroll Dropdown -->
-            <div class="relative">
-                <details class="group">
-                    <summary
-                        class="list-none cursor-pointer bg-[#c9a15f] px-6 py-3 font-medium hover:bg-[#b88f4d] transition">
-                        Enroll Now ▼
-                    </summary>
-
-                    <div class="absolute right-0 top-full mt-1 bg-white border shadow-lg min-w-[250px] z-50">
-
-                        <a href="/enroll-student" class="block px-5 py-4 hover:bg-gray-100">
-                            🎓 Student Enrollment
-                        </a>
-
-                        <a href="/enroll-tutor" class="block px-5 py-4 hover:bg-gray-100 border-t">
-                            👨‍🏫 Tutor Registration
-                        </a>
-
-                    </div>
-                </details>
             </div>
 
         </div>
 
-        <!-- Mobile Menu Button -->
-        <button id="menuBtn" class="md:hidden text-3xl leading-none">
-
-            ☰
-
-        </button>
-
     </div>
 
-</div>
-
-<!-- Mobile Menu -->
-<div id="mobileMenu" class="hidden md:hidden bg-white border-t shadow-lg">
-
-    <div class="flex flex-col p-6 gap-5">
-
-        <a href="/" class="text-lg">
-            Home
-        </a>
-
-        <a href="/subjects" class="text-lg">
-            Subjects
-        </a>
-
-        <a href="/mentors" class="hover:text-[#c9a15f] transition text-lg">
-            Mentors
-        </a>
-
-        <a href="/about" class="text-lg">
-            About
-        </a>
-
-        <a href="/contact" class="text-lg">
-            Contact
-        </a>
-
-        <% if (!user) { %>
-
-            <div class="flex gap-3">
-
-                <a href="/login" class="flex-1 text-center border py-3">
-
-                    <i class="fa-solid fa-right-to-bracket mr-2"></i>
-                    Login
-
-                </a>
-
-                <a href="/signup" class="flex-1 text-center bg-[#c9a15f] py-3">
-
-                    <i class="fa-solid fa-user-plus mr-2"></i>
-                    Sign Up
-
-                </a>
-
-            </div>
-
-            <% } else { %>
-
-                <p class="text-center text-gray-600">
-                    Welcome, <%= user.name %>
-                </p>
-
-                <% if (user.role==="admin" ) { %>
-
-                    <a href="/admin-dashboard" class="block text-center bg-[#c9a15f] text-white py-3">
-
-                        Dashboard
-
-                    </a>
-
-                        <% } %>
-
-                            <a href="/logout" class="block text-center bg-red-500 text-white py-3">
-
-                                <i class="fa-solid fa-right-from-bracket mr-2"></i>
-                                Logout
-
-                            </a>
-
-                            <% } %>
-
-                                <div class="border-t pt-4">
-
-                                    <p class="text-xs uppercase tracking-wider text-gray-500 mb-3">
-                                        Enrollment
-                                    </p>
-
-                                    <a href="/enroll-student"
-                                        class="block bg-[#c9a15f] text-center py-3 font-medium mb-3">
-
-                                        🎓 Student Enrollment
-
-                                    </a>
-
-                                    <a href="/enroll-tutor"
-                                        class="block border border-[#c9a15f] text-center py-3 font-medium">
-
-                                        👨‍🏫 Tutor Registration
-
-                                    </a>
-
-                                </div>
-
-    </div>
-
-</div>
 </nav>
 
 <script>
 
-    const menuBtn = document.getElementById("menuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
+const menuBtn = document.getElementById("menuBtn");
+const mobileMenu = document.getElementById("mobileMenu");
 
-    menuBtn.addEventListener("click", () => {
+menuBtn.addEventListener("click", () => {
 
-        mobileMenu.classList.toggle("hidden");
+    mobileMenu.classList.toggle("hidden");
 
-        menuBtn.innerHTML =
-            mobileMenu.classList.contains("hidden")
-                ? "☰"
-                : "✕";
-    });
+    menuBtn.innerHTML = mobileMenu.classList.contains("hidden")
+        ? "☰"
+        : "✕";
+
+});
 
 </script>

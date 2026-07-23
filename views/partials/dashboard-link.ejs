@@ -1,0 +1,33 @@
+<% if (user) { %>
+
+    <% if (user.role === "admin") { %>
+
+        <a href="/admin-dashboard"
+           class="px-4 py-2 border rounded hover:bg-[#c9a15f] hover:text-white transition">
+            Dashboard
+        </a>
+
+    <% } else if (user.role === "student") { %>
+
+        <a href="/student/dashboard"
+           class="px-4 py-2 border rounded hover:bg-[#c9a15f] hover:text-white transition">
+            Dashboard
+        </a>
+
+    <% } else if (user.role === "tutor") { %>
+
+        <a href="/tutor/dashboard"
+           class="px-4 py-2 border rounded hover:bg-[#c9a15f] hover:text-white transition">
+            Dashboard
+        </a>
+
+    <% } else if (user.role === "mentor") { %>
+
+        <a href="/mentor/dashboard"
+           class="px-4 py-2 border rounded hover:bg-[#c9a15f] hover:text-white transition">
+            Dashboard
+        </a>
+
+    <% } %>
+
+<% } %>

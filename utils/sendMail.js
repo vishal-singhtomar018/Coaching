@@ -9,6 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMail = async ({ to, replyTo, subject, html }) => {
+  console.log(to);
   await transporter.sendMail({
     from: `"Knowledge Home Tutor" <${process.env.EMAIL_USER}>`,
     to,

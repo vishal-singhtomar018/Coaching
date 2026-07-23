@@ -1,7 +1,7 @@
 const sendMail = require("../utils/sendMail");
 const StudentEnrollment = require("../models/StudentEnrollment");
 const TutorEnrollment = require("../models/TutorEnrollment");
-const Isloggedin = require('../middleware/authMiddleware')
+const Isloggedin = require("../middleware/authMiddleware");
 const {
   studentEnrollmentSchema,
   tutorEnrollmentSchema,
@@ -34,7 +34,6 @@ exports.contact = (req, res) => {
 exports.testimonials = (req, res) => {
   res.render("pages/testimonials");
 };
-
 exports.saveTutor = async (req, res) => {
   try {
     await TutorEnrollment.create({
@@ -58,49 +57,62 @@ exports.saveTutor = async (req, res) => {
       contactNumber: req.body.contactNumber,
     });
 
-    await sendMail(
-      "👨‍🏫 Tutor Registration",
-      `
-    <h2>New Tutor Registration</h2>
+    // Send email to Admin
+    await sendMail({
+      to: process.env.ADMIN_EMAIL,
+      replyTo: req.body.email,
+      subject: "👨‍🏫 New Tutor Registration",
 
-    <p><b>Name:</b> ${req.body.name}</p>
-    <p><b>Gender:</b> ${req.body.gender}</p>
-    <p><b>Age:</b> ${req.body.age}</p>
-    <p><b>Marital Status:</b> ${req.body.maritalStatus}</p>
-    <p><b>Qualification:</b> ${req.body.qualification}</p>
-    <p><b>Experience:</b> ${req.body.experience}</p>
-    <p><b>Classes:</b> ${req.body.classesTeach}</p>
-    <p><b>Subjects:</b> ${req.body.subjectExpertise}</p>
-    <p><b>Expected Salary:</b> ${req.body.expectedSalary}</p>
-    <p><b>Preferred Time:</b> ${req.body.preferredTime}</p>
-    <p><b>Job Location:</b> ${req.body.jobLocation}</p>
-    <p><b>Vehicle:</b> ${req.body.personalVehicle}</p>
-    <p><b>Area Cover:</b> ${req.body.areaCover}</p>
-    <p><b>Contact:</b> ${req.body.contactNumber}</p>
-    <p><b>Address:</b> ${req.body.address}</p>
-    <p><b>Permanent Address:</b> ${req.body.permanentAddress}</p>
-    <p><b>Other Skills:</b> ${req.body.otherSkills}</p>
-  `,
-    );
+      html: `
+        <h2>New Tutor Registration</h2>
 
-    res.render("pages/enroll-tutor", {
-      success: true,
-      error: false,
-      errors: [],
-      formData: {},
+        <p><b>Name:</b> ${req.body.name}</p>
+
+        <p><b>Email:</b> ${req.body.email}</p>
+
+        <p><b>Contact:</b> ${req.body.contactNumber}</p>
+
+        <p><b>Gender:</b> ${req.body.gender}</p>
+
+        <p><b>Age:</b> ${req.body.age}</p>
+
+        <p><b>Qualification:</b> ${req.body.qualification}</p>
+
+        <p><b>Experience:</b> ${req.body.experience}</p>
+
+        <p><b>Classes:</b> ${req.body.classesTeach}</p>
+
+        <p><b>Subjects:</b> ${req.body.subjectExpertise}</p>
+
+        <p><b>Expected Salary:</b> ${req.body.expectedSalary}</p>
+
+        <p><b>Preferred Time:</b> ${req.body.preferredTime}</p>
+
+        <p><b>Job Location:</b> ${req.body.jobLocation}</p>
+
+        <p><b>Vehicle:</b> ${req.body.personalVehicle}</p>
+
+        <p><b>Area Cover:</b> ${req.body.areaCover}</p>
+
+        <p><b>Address:</b> ${req.body.address}</p>
+
+        <p><b>Permanent Address:</b> ${req.body.permanentAddress}</p>
+
+        <p><b>Other Skills:</b> ${req.body.otherSkills}</p>
+      `,
     });
+    res.redirect("/")
   } catch (err) {
     console.log(err);
 
     res.render("pages/enroll-tutor", {
       success: false,
       error: true,
-      errors: [],
-      formData: {},
+      errors: ["Something went wrong."],
+      formData: req.body,
     });
   }
 };
-
 exports.saveStudent = async (req, res) => {
   try {
     // Validate form data
@@ -121,6 +133,8 @@ exports.saveStudent = async (req, res) => {
 
     // Save student
     await StudentEnrollment.create({
+      user: req.session.user.id, // Link enrollment to logged-in user
+
       studentName: req.body.studentName,
       class: req.body.class,
       subject: req.body.subject,
@@ -141,9 +155,12 @@ exports.saveStudent = async (req, res) => {
     });
 
     // Send mail
-    await sendMail(
-      "🎓 Student Enrollment",
-      `
+    await sendMail({
+      to: process.env.ADMIN_EMAIL,
+      replyTo: req.body.email,
+      subject: "🎓 Student Enrollment",
+
+      html: `
       <h2>New Student Enrollment</h2>
 
       <p><b>Student Name:</b> ${req.body.studentName}</p>
@@ -165,15 +182,10 @@ exports.saveStudent = async (req, res) => {
       <p><b>Parent Contact:</b> ${req.body.parentContact}</p>
       <p><b>WhatsApp:</b> ${req.body.whatsappNumber}</p>
       <p><b>Email:</b> ${req.body.email}</p>
-      `,
-    );
-
-    return res.render("pages/enroll-student", {
-      success: true,
-      error: false,
-      errors: [],
-      formData: {},
+  `,
     });
+
+    return res.redirect("/student/dashboard");
   } catch (err) {
     console.log(err);
 

@@ -1,0 +1,124 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<section class="min-h-screen bg-[#f8f7f5] py-16">
+
+    <div class="max-w-2xl mx-auto px-6">
+
+        <div class="bg-white shadow-xl rounded-lg border border-gray-200 p-10">
+
+            <div class="mb-8">
+
+                <h1 class="text-4xl font-serif text-gray-800">
+                    Assign Tutor
+                </h1>
+
+                <p class="text-gray-500 mt-2">
+                    Assign a tutor to the selected student.
+                </p>
+
+            </div>
+
+            <!-- Student Information -->
+
+            <div class="bg-gray-50 border rounded-lg p-6 mb-8">
+
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                    Student Details
+                </h2>
+
+                <div class="space-y-3">
+
+                    <p>
+                        <span class="font-semibold">Student Name:</span>
+                        <%= student.studentName %>
+                    </p>
+
+                    <p>
+                        <span class="font-semibold">Class:</span>
+                        <%= student.class %>
+                    </p>
+
+                    <p>
+                        <span class="font-semibold">Subject:</span>
+                        <%= student.subject %>
+                    </p>
+
+                    <p>
+                        <span class="font-semibold">Parent:</span>
+                        <%= student.parentName %>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Assign Tutor Form -->
+
+            <form
+                action="/admin/assign-tutor/<%= student._id %>"
+                method="POST"
+                class="space-y-6">
+
+                <div>
+
+                    <label class="block text-lg font-medium mb-3">
+
+                        Select Tutor
+
+                    </label>
+
+                    <select
+                        name="tutor"
+                        required
+                        class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-[#c9a15f] focus:border-[#c9a15f] outline-none">
+
+                        <option value="">
+                            -- Select Tutor --
+                        </option>
+
+                        <% tutors.forEach(tutor => { %>
+
+                            <option value="<%= tutor._id %>">
+
+                                <%= tutor.fullName %> •
+                                <%= tutor.subject %> •
+                                <%= tutor.experience %>
+
+                            </option>
+
+                        <% }) %>
+
+                    </select>
+
+                </div>
+
+                <div class="flex gap-4">
+
+                    <button
+                        type="submit"
+                        class="bg-[#c9a15f] hover:bg-[#b88f4d] text-white px-8 py-4 rounded-lg transition duration-300">
+
+                        Assign Tutor
+
+                    </button>
+
+                    <a
+                        href="/admin/students"
+                        class="border border-gray-300 px-8 py-4 rounded-lg hover:bg-gray-100 transition">
+
+                        Cancel
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<%- include('../partials/footer') %>

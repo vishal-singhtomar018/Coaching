@@ -1,6 +1,18 @@
 const mongoose = require("mongoose");
 
 const studentEnrollmentSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+
+  assignedTutor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "TutorEnrollment",
+    default: null,
+  },
+
   studentName: {
     type: String,
     required: true,

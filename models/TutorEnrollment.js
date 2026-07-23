@@ -49,7 +49,27 @@ const tutorEnrollmentSchema = new mongoose.Schema({
   isDeleted: {
     type: Boolean,
     default: false,
-},
+  },
+
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
+
+  approvedAt: {
+    type: Date,
+  },
+
+  approvedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = mongoose.model("TutorEnrollment", tutorEnrollmentSchema);

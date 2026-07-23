@@ -1,0 +1,99 @@
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+
+<section class="bg-[#f8f7f5] min-h-screen pt-32 pb-20">
+
+```
+<div class="max-w-7xl mx-auto px-6 h-full">
+
+    <h1 class="font-serif text-5xl mb-10">
+        Pending Tutor Requests
+    </h1>
+
+    <% if (tutors.length === 0) { %>
+
+        <!-- Empty State -->
+        <div class="flex items-center justify-center min-h-[60vh]">
+
+            <div class="bg-white border border-green-200 shadow-sm rounded-2xl p-10 text-center max-w-lg w-full">
+
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-green-100 flex items-center justify-center">
+
+                    <i class="fa-solid fa-circle-check text-4xl text-green-600"></i>
+
+                </div>
+
+                <h2 class="font-serif text-3xl text-gray-800 mb-3">
+                    No Pending Requests
+                </h2>
+
+                <p class="text-gray-500 leading-relaxed">
+                    Great! There are currently no tutor applications waiting for approval.
+                </p>
+
+            </div>
+
+        </div>
+
+    <% } else { %>
+
+        <!-- Tutor Cards -->
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+            <% tutors.forEach(tutor => { %>
+
+                <div class="bg-white shadow border rounded-xl p-6">
+
+                    <div class="flex justify-between items-center mb-4">
+
+                        <h2 class="text-2xl font-semibold">
+                            <%= tutor.name %>
+                        </h2>
+
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                            Pending
+                        </span>
+
+                    </div>
+
+                    <p><strong>Subject:</strong> <%= tutor.subjectExpertise %></p>
+                    <p><strong>Email:</strong> <%= tutor.email %></p>
+                    <p><strong>Phone:</strong> <%= tutor.contactNumber %></p>
+                    <p><strong>Qualification:</strong> <%= tutor.qualification %></p>
+                    <p><strong>Experience:</strong> <%= tutor.experience %></p>
+                    <p><strong>Salary:</strong> <%= tutor.expectedSalary %></p>
+
+                    <div class="flex gap-3 mt-6">
+
+                        <form action="/admin/tutors/<%= tutor._id %>/approve" method="POST">
+
+                            <button class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded transition">
+                                Approve
+                            </button>
+
+                        </form>
+
+                        <form action="/admin/tutors/<%= tutor._id %>/reject" method="POST">
+
+                            <button class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded transition">
+                                Reject
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            <% }) %>
+
+        </div>
+
+    <% } %>
+
+</div>
+```
+
+</section>
+
+<%- include('../partials/footer') %>
