@@ -1,0 +1,27 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <main class="max-w-5xl mx-auto px-6 py-12">
+                <h1 class="font-serif text-4xl mb-8">Messages</h1>
+                <div class="bg-white shadow rounded-xl p-6 mb-6 max-h-[500px] overflow-auto">
+                    <% messages.forEach(m=>{ %><div
+                            class="mb-4 <%=String(m.sender._id)===String(user.id)?'text-right':''%>"><span
+                                class="inline-block max-w-[80%] p-3 rounded-lg bg-gray-100"><b>
+                                    <%=String(m.sender._id)===String(user.id)?'You':m.sender.name%>
+                                </b><br>
+                                <%=m.body%>
+                            </span></div>
+                        <% }) %>
+                </div>
+                <form method="post" action="/<%=user.role%>/messages" class="bg-white shadow rounded-xl p-5">
+                    <% if(user.role==='tutor' &&students){ %><select name="student" required
+                            class="w-full border rounded p-3 mb-3">
+                            <option value="">Select student</option>
+                            <% students.forEach(s=>{ %><option value="<%=s._id%>">
+                                    <%=s.studentName%>
+                                </option>
+                                <% }) %>
+                        </select>
+                        <% } %><textarea name="body" required class="w-full border rounded p-3"
+                                placeholder="Write a message..."></textarea><button
+                                class="mt-3 bg-[#c9a15f] text-white px-5 py-2 rounded">Send</button>
+                </form>
+            </main><%- include('../partials/footer') %>

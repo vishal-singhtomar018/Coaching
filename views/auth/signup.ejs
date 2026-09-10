@@ -1,17 +1,28 @@
 <%- include('../partials/head') %>
 <%- include('../partials/navbar') %>
 
-<section class="min-h-screen flex justify-center items-center bg-[#f8f7f5]">
-    <form action="/signup" method="POST" class="bg-white p-10 shadow-xl w-[450px] rounded-lg">
+<section class="min-h-screen flex justify-center items-center bg-[#f8f7f5] py-12">
+    <form action="/signup" method="POST" class="bg-white p-10 shadow-xl w-full max-w-[450px] rounded-lg">
 
-        <h1 class="font-serif text-4xl mb-8 text-center">
-            Signup
+        <h1 class="font-serif text-4xl mb-3 text-center">
+            Student Signup
         </h1>
+
+        <p class="text-center text-gray-500 mb-8">
+            Create your student account first, then complete your student registration.
+        </p>
+
+        <% if (error) { %>
+            <div class="bg-red-100 border border-red-300 text-red-700 p-4 mb-5 rounded">
+                <%= error %>
+            </div>
+        <% } %>
 
         <input
             type="text"
             name="name"
-            placeholder="Name"
+            placeholder="Full Name"
+            value="<%= formData?.name || '' %>"
             class="w-full border p-4 mb-5 rounded"
             required>
 
@@ -19,29 +30,35 @@
             type="email"
             name="email"
             placeholder="Email"
+            value="<%= formData?.email || '' %>"
             class="w-full border p-4 mb-5 rounded"
             required>
 
         <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Password (minimum 6 characters)"
+            minlength="6"
             class="w-full border p-4 mb-5 rounded"
             required>
 
         <button
             type="submit"
             class="w-full bg-black text-white py-4 hover:bg-[#c9a15f] hover:text-black transition rounded">
-
-            Signup
-
+            Create Student Account
         </button>
 
         <p class="mt-6 text-center">
             Already have an account?
-
             <a href="/login" class="text-[#c9a15f] font-medium">
                 Login
+            </a>
+        </p>
+
+        <p class="mt-3 text-center text-sm text-gray-500">
+            Want to become a tutor?
+            <a href="/enroll-tutor" class="text-[#c9a15f] font-medium">
+                Apply as a Tutor
             </a>
         </p>
 

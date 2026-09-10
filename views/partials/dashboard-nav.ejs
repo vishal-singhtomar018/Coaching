@@ -1,0 +1,24 @@
+<div class="bg-white border-b sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex flex-wrap gap-2 items-center"><a href="/<%= user.role %>/dashboard"
+            class="font-semibold mr-3">Dashboard</a>
+        <% if(user.role==='student' ){ %><a href="/student/assignments"
+                class="px-3 py-2 hover:bg-gray-100 rounded">Homework</a><a href="/student/attendance"
+                class="px-3 py-2 hover:bg-gray-100 rounded">Attendance</a><a href="/student/materials"
+                class="px-3 py-2 hover:bg-gray-100 rounded">Materials</a><a href="/student/tests"
+                class="px-3 py-2 hover:bg-gray-100 rounded">Tests</a><a href="/student/schedule"
+                class="px-3 py-2 hover:bg-gray-100 rounded">Schedule</a><a href="/student/progress"
+                class="px-3 py-2 hover:bg-gray-100 rounded">Progress</a>
+            <% } else { %><a href="/tutor/students" class="px-3 py-2 hover:bg-gray-100 rounded">Students</a><a
+                    href="/tutor/attendance" class="px-3 py-2 hover:bg-gray-100 rounded">Attendance</a><a
+                    href="/tutor/homework" class="px-3 py-2 hover:bg-gray-100 rounded">Homework</a><a
+                    href="/tutor/notes" class="px-3 py-2 hover:bg-gray-100 rounded">Materials</a><a href="/tutor/tests"
+                    class="px-3 py-2 hover:bg-gray-100 rounded">Tests</a><a href="/tutor/schedule"
+                    class="px-3 py-2 hover:bg-gray-100 rounded">Schedule</a><a href="/tutor/progress"
+                    class="px-3 py-2 hover:bg-gray-100 rounded">Progress</a>
+                <% } %><a href="/<%= user.role %>/messages" class="px-3 py-2 hover:bg-gray-100 rounded">Messages</a><a
+                        href="/<%= user.role %>/notifications"
+                        class="px-3 py-2 hover:bg-gray-100 rounded">Notifications</a><a href="/<%= user.role %>/profile"
+                        class="px-3 py-2 hover:bg-gray-100 rounded">Profile</a><a href="/logout"
+                        class="ml-auto px-3 py-2 text-red-600">Logout</a>
+    </div>
+</div>

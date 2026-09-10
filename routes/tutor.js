@@ -1,17 +1,15 @@
-const express = require("express");
-const router = express.Router();
-
-const tutorController = require("../controllers/tutorController");
-const { isLoggedIn } = require("../middleware/authMiddleware");
-const {isTutor}=require("../middleware/tutorMiddleware")
-
-
-// Student Profile
-router.get(
-    "/student/:id",
-    isLoggedIn,
-    isTutor,
-    tutorController.studentProfile
-);
-
-module.exports = router;
+const express=require('express');const router=express.Router();const c=require('../controllers/tutorController');const {isLoggedIn}=require('../middleware/authMiddleware');const {isTutor}=require('../middleware/tutorMiddleware');
+const multer=require('multer');const path=require('path');
+const storage=multer.diskStorage({destination:(req,file,cb)=>cb(null,path.join(__dirname,'../public/uploads/materials')),filename:(req,file,cb)=>cb(null,Date.now()+'-'+file.originalname.replace(/[^a-zA-Z0-9._-]/g,'_'))});
+const upload=multer({storage});
+router.use(isLoggedIn,isTutor);
+router.get('/dashboard',c.dashboard);router.get('/students',c.students);router.get('/student/:id',c.studentProfile);
+router.get('/attendance',c.attendance);router.post('/attendance',c.markAttendance);
+router.get('/homework',c.assignments);router.post('/homework',c.createAssignment);
+router.get('/notes',c.materials);router.post('/notes',upload.single('material'),c.addMaterial);
+router.get('/tests',c.tests);router.post('/tests',c.createTest);router.post('/tests/:id/grade',c.gradeTest);
+router.get('/schedule',c.schedule);router.post('/schedule',c.createSchedule);
+router.get('/progress',c.progress);router.post('/progress',c.addProgress);
+router.get('/profile',c.profile);router.post('/profile',c.updateProfile);router.post('/change-password',c.changePassword);
+router.get('/notifications',c.notifications);router.get('/messages',c.messages);router.post('/messages',c.sendMessage);
+module.exports=router;

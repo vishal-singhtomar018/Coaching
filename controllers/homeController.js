@@ -115,6 +115,16 @@ exports.saveTutor = async (req, res) => {
 };
 exports.saveStudent = async (req, res) => {
   try {
+    // A student must have exactly one active enrollment/profile.
+    const existingStudent = await StudentEnrollment.findOne({
+      user: req.session.user.id,
+      isDeleted: false,
+    });
+
+    if (existingStudent) {
+      return res.redirect("/student/dashboard");
+    }
+
     // Validate form data
     const { error } = studentEnrollmentSchema.validate(req.body, {
       abortEarly: false,

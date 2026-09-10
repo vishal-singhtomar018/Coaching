@@ -6,51 +6,81 @@ const Student = require("../models/StudentEnrollment");
 const Tutor = require("../models/TutorEnrollment");
 const Contact = require("../models/Contact");
 const Mentor = require("../models/Mentor");
+const TutorChangeRequest = require("../models/TutorChangeRequest");
+const Notification = require("../models/Notification");
 
 exports.loginPage = (req, res) => {
   res.render("auth/login");
 };
 
 exports.signupPage = (req, res) => {
-  res.render("auth/signup");
+  // If already logged in, there is no reason to create another student account.
+  if (req.session.user) {
+    return res.redirect("/");
+  }
+
+  res.render("auth/signup", {
+    error: false,
+    message: false,
+    formData: {},
+  });
 };
 
+// Public signup is ONLY for students.
+// Tutor accounts are created by the admin after approving a tutor application.
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const name = (req.body.name || "").trim();
+    const email = (req.body.email || "").trim().toLowerCase();
+    const password = req.body.password || "";
+
+    if (!name || !email || !password) {
+      return res.status(400).render("auth/signup", {
+        error: "Name, email and password are required.",
+        message: false,
+        formData: { name, email },
+      });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).render("auth/signup", {
+        error: "Password must be at least 6 characters.",
+        message: false,
+        formData: { name, email },
+      });
+    }
 
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.send("User already exists");
+      return res.status(409).render("auth/signup", {
+        error: "An account with this email already exists. Please login.",
+        message: false,
+        formData: { name, email },
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
+    // Never accept role from req.body. A public signup always creates a student.
+    await User.create({
       name,
       email,
       password: hashedPassword,
       role: "student",
     });
 
-    req.session.user = {
-      id: user._id,
-      role: user.role,
-      email: user.email,
-      name: user.name,
-    };
-
-    req.session.save((err) => {
-      if (err) {
-        return res.send("Session Error");
-      }
-
-      return res.redirect("/");
-    });
+    return res.redirect("/login?signup=success");
   } catch (err) {
     console.log(err);
-    res.send("Something went wrong");
+    return res.status(500).render("auth/signup", {
+      error: "Something went wrong. Please try again.",
+      message: false,
+      formData: {
+        name: req.body.name || "",
+        email: req.body.email || "",
+      },
+    });
   }
 };
 
@@ -65,18 +95,15 @@ exports.login = async (req, res) => {
     }
 
     const match = await bcrypt.compare(password, user.password);
-
     if (!match) {
       return res.send("Invalid email or password");
     }
-
     req.session.user = {
       id: user._id,
       role: user.role,
       email: user.email,
       name: user.name,
     };
-
     console.log(user.role);
 
     req.session.save((err) => {
@@ -96,9 +123,9 @@ exports.login = async (req, res) => {
         return res.redirect("/tutor/dashboard");
       }
 
-      if (user.role === "mentor") {
-        return res.redirect("/mentor/dashboard");
-      }
+      // if (user.role === "mentor") {
+      //   return res.redirect("/mentor/dashboard");
+      // }
 
       return res.redirect("/");
     });
@@ -108,16 +135,17 @@ exports.login = async (req, res) => {
   }
 };
 
+
 exports.logout = (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       return res.send("Logout failed");
     }
-
     res.clearCookie("connect.sid");
     res.redirect("/");
   });
 };
+
 
 exports.studentsPage = async (req, res) => {
   try {
@@ -330,37 +358,165 @@ exports.searchMentors = async (req, res) => {
   }
 };
 
+// Normalize comma/space separated text so matching works for values such as
+// "Maths, Physics", "Class 9-10" and "Rau, Indore".
+const normalizeList = (value) =>
+  String(value || "")
+    .toLowerCase()
+    .split(/[,|/;]+|\s+and\s+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+const containsMatch = (studentValue, tutorValue) => {
+  const studentItems = normalizeList(studentValue);
+  const tutorItems = normalizeList(tutorValue);
+
+  return studentItems.some((studentItem) =>
+    tutorItems.some(
+      (tutorItem) =>
+        tutorItem === studentItem ||
+        tutorItem.includes(studentItem) ||
+        studentItem.includes(tutorItem),
+    ),
+  );
+};
+
+const scoreTutorForStudent = (student, tutor, assignedCount) => {
+  let score = 0;
+  const reasons = [];
+
+  // Subject is the strongest match.
+  if (containsMatch(student.subject, tutor.subjectExpertise)) {
+    score += 35;
+    reasons.push("Subject");
+  }
+
+  // Class compatibility.
+  if (containsMatch(student.class, tutor.classesTeach)) {
+    score += 25;
+    reasons.push("Class");
+  }
+
+  // Student location vs tutor coverage/job location.
+  if (
+    containsMatch(student.currentLocation, tutor.areaCover) ||
+    containsMatch(student.currentLocation, tutor.jobLocation)
+  ) {
+    score += 15;
+    reasons.push("Area");
+  }
+
+  // Preferred teaching time vs student's requested slot.
+  if (containsMatch(student.timeSlot, tutor.preferredTime)) {
+    score += 15;
+    reasons.push("Time");
+  }
+
+  // Reward available capacity. A full tutor gets no capacity points.
+  const maxStudents = Number(tutor.maxStudents) || 10;
+  if (assignedCount < maxStudents) {
+    score += 10;
+    reasons.push("Capacity");
+  }
+
+  return {
+    score: Math.min(score, 100),
+    reasons,
+    assignedCount,
+    maxStudents,
+    available: assignedCount < maxStudents,
+  };
+};
+
 exports.assignTutorPage = async (req, res) => {
-  const student = await Student.findById(req.params.studentId);
+  try {
+    const student = await Student.findOne({
+      _id: req.params.studentId,
+      isDeleted: false,
+    });
 
-  const tutors = await TutorEnrollment.find({
-    isDeleted: false,
-  });
+    if (!student) {
+      return res.status(404).send("Student not found");
+    }
 
-  res.render("dashboard/assign-tutor", {
-    student,
-    tutors,
-  });
+    const tutors = await Tutor.find({
+      status: "approved",
+      isDeleted: false,
+    });
+
+    const recommendations = await Promise.all(
+      tutors.map(async (tutor) => {
+        const assignedCount = await Student.countDocuments({
+          assignedTutor: tutor._id,
+          isDeleted: false,
+        });
+
+        return {
+          tutor,
+          ...scoreTutorForStudent(student, tutor, assignedCount),
+        };
+      }),
+    );
+
+    recommendations.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return a.assignedCount - b.assignedCount;
+    });
+
+    res.render("dashboard/assign-tutor", {
+      title: "Assign Tutor",
+      student,
+      recommendations: recommendations.slice(0, 3),
+      tutors: recommendations,
+      user: req.session.user,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server Error");
+  }
 };
 
 exports.assignTutor = async (req, res) => {
   try {
     const { tutorId } = req.body;
 
-    console.log("Student ID:", req.params.id);
-    console.log("Tutor ID:", tutorId);
+    if (!tutorId) {
+      return res.status(400).send("Please select a tutor");
+    }
 
-    const students = await Student.findByIdAndUpdate(
-      req.params.id,
-      {
-        assignedTutor: tutorId,
-      },
-      {
-        new: true,
-      }
+    const student = await Student.findOne({
+      _id: req.params.id,
+      isDeleted: false,
+    });
+
+    const tutor = await Tutor.findOne({
+      _id: tutorId,
+      status: "approved",
+      isDeleted: false,
+    });
+
+    if (!student || !tutor) {
+      return res.status(404).send("Student or approved tutor not found");
+    }
+
+    const assignedCount = await Student.countDocuments({
+      assignedTutor: tutor._id,
+      isDeleted: false,
+    });
+
+    const maxStudents = Number(tutor.maxStudents) || 10;
+
+    if (assignedCount >= maxStudents) {
+      return res
+        .status(409)
+        .send("This tutor has reached the maximum student capacity.");
+    }
+
+    await Student.findByIdAndUpdate(
+      student._id,
+      { assignedTutor: tutor._id },
+      { new: true },
     );
-
-    console.log(students);
 
     res.redirect("/admin/students");
   } catch (err) {
@@ -388,7 +544,7 @@ exports.approveTutor = async (req, res) => {
     const tempPassword = generatePassword.generate({
       length: 10,
       numbers: true,
-    });
+    })
 
     const hashedPassword = await bcrypt.hash(tempPassword, 10);
 
@@ -448,6 +604,9 @@ exports.rejectTutor = async (req, res) => {
   }
 };
 
+
+exports.tutorChangeRequests = async (req,res)=>{try{const requests=await TutorChangeRequest.find().populate('student currentTutor').sort({createdAt:-1});res.render('dashboard/tutor-change-requests',{title:'Tutor Change Requests',requests,user:req.session.user});}catch(e){console.log(e);res.status(500).send('Server Error')}};
+exports.resolveTutorChangeRequest = async (req,res)=>{try{const request=await TutorChangeRequest.findById(req.params.id).populate('student');if(!request)return res.redirect('/admin/tutor-change-requests');if(req.body.action==='approve'){request.status='approved';request.adminNote=req.body.adminNote||'';request.student.assignedTutor=null;await request.student.save();}else{request.status='rejected';request.adminNote=req.body.adminNote||'';}await request.save();if(request.student.user)await Notification.create({user:request.student.user,title:'Tutor change request '+request.status,message:request.adminNote||('Your tutor change request was '+request.status+'.')});res.redirect('/admin/tutor-change-requests');}catch(e){console.log(e);res.status(500).send('Server Error')}};
 exports.updateMessageStatus = async (req, res) => {
   try {
     await Contact.findByIdAndUpdate(req.params.id, {

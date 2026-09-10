@@ -1,0 +1,38 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">Class Schedule</h1>
+                <form method="post" action="/tutor/schedule"
+                    class="bg-white shadow rounded-xl p-6 grid md:grid-cols-3 gap-3 mb-8"><select name="student"
+                        required class="border rounded p-3">
+                        <option value="">Student</option>
+                        <% students.forEach(s=>{ %><option value="<%=s._id%>">
+                                <%=s.studentName%>
+                            </option>
+                            <% }) %>
+                    </select><select name="day" class="border rounded p-3">
+                        <% ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].forEach(d=>{ %>
+                            <option>
+                                <%=d%>
+                            </option>
+                            <% }) %>
+                    </select><input name="subject" placeholder="Subject" class="border rounded p-3"><input type="time"
+                        name="startTime" required class="border rounded p-3"><input type="time" name="endTime" required
+                        class="border rounded p-3"><input name="location" placeholder="Location / Online link"
+                        class="border rounded p-3"><input name="notes" placeholder="Notes"
+                        class="border rounded p-3 md:col-span-3"><button
+                        class="bg-[#c9a15f] text-white py-3 rounded md:col-span-3">Add Class</button></form>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <% schedules.forEach(s=>{ %><div class="bg-white shadow rounded-xl p-5"><b>
+                                <%=s.day%> · <%=s.startTime%>-<%=s.endTime%>
+                            </b>
+                            <p>
+                                <%=s.student?.studentName%> · <%=s.subject%>
+                            </p>
+                            <p class="text-gray-500">
+                                <%=s.location||''%>
+                            </p>
+                        </div>
+                        <% }) %>
+                </div>
+                </section>
+            </main><%- include('../partials/footer') %>

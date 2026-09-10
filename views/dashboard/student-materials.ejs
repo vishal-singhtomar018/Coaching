@@ -1,0 +1,20 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">Study Materials</h1>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <% materials.forEach(m=>{ %><div class="bg-white shadow rounded-xl p-6">
+                            <h2 class="text-xl font-semibold">
+                                <%=m.title%>
+                            </h2>
+                            <p class="text-gray-500 mt-2">
+                                <%=m.description||''%>
+                            </p>
+                            <% if(m.fileUrl){ %><a target="_blank" href="<%=m.fileUrl%>"
+                                    class="inline-block mt-4 bg-[#c9a15f] text-white px-4 py-2 rounded">Open
+                                    Material</a>
+                                <% } %>
+                        </div>
+                        <% }) %>
+                </div>
+                </section>
+            </main><%- include('../partials/footer') %>

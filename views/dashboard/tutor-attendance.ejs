@@ -1,0 +1,45 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">Mark Attendance</h1>
+                <form method="post" action="/tutor/attendance"
+                    class="bg-white shadow rounded-xl p-6 grid md:grid-cols-4 gap-3 mb-8"><select name="student"
+                        required class="border rounded p-3">
+                        <option value="">Student</option>
+                        <% students.forEach(s=>{ %><option value="<%=s._id%>">
+                                <%=s.studentName%>
+                            </option>
+                            <% }) %>
+                    </select><input type="date" name="date" required class="border rounded p-3"><select name="status"
+                        class="border rounded p-3">
+                        <option>present</option>
+                        <option>absent</option>
+                        <option>late</option>
+                    </select><input name="note" placeholder="Note" class="border rounded p-3"><button
+                        class="md:col-span-4 bg-[#c9a15f] text-white py-3 rounded">Save Attendance</button></form>
+                <div class="bg-white shadow rounded-xl overflow-auto">
+                    <table class="w-full">
+                        <tr class="bg-gray-50">
+                            <th class="p-3 text-left">Student</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Note</th>
+                        </tr>
+                        <% records.forEach(r=>{ %><tr class="border-t">
+                                <td class="p-3">
+                                    <%=r.student?.studentName%>
+                                </td>
+                                <td>
+                                    <%=r.date.toLocaleDateString()%>
+                                </td>
+                                <td>
+                                    <%=r.status%>
+                                </td>
+                                <td>
+                                    <%=r.note||''%>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </table>
+                </div>
+            </section>
+            </main><%- include('../partials/footer') %>

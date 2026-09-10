@@ -199,37 +199,11 @@
 
                                     </div>
 
-                                    <form action="/admin/students/<%= student._id %>/assign-tutor" method="POST"
-                                        class="mt-4">
-
-                                        <select name="tutorId" class="border rounded px-3 py-2 w-full">
-
-                                            <option value="">
-                                                Select Tutor
-                                            </option>
-
-                                            <% tutors.forEach(tutor=>{ %>
-
-                                                <option value="<%= tutor._id %>" <%=student.assignedTutor &&
-                                                    student.assignedTutor._id.toString()===tutor._id.toString()
-                                                    ? "selected" : "" %>>
-
-                                                    <%= tutor.name %>
-
-                                                </option>
-
-                                                <% }) %>
-
-                                        </select>
-
-                                        <button
-                                            class="mt-3 w-full bg-[#c9a15f] hover:bg-[#b88f4d] text-white py-2 rounded">
-
-                                            Assign Tutor
-
-                                        </button>
-
-                                    </form>
+                                    <a href="/admin/assign-tutor/<%= student._id %>"
+                                        class="mt-4 block w-full text-center bg-[#c9a15f] hover:bg-[#b88f4d] text-white py-3 rounded-lg transition">
+                                        <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>
+                                        Find Best Tutor
+                                    </a>
 
 
                                 </div>

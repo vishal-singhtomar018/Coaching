@@ -1,38 +1,27 @@
-const Tutor = require("../models/TutorEnrollment");
-const Student = require("../models/StudentEnrollment");
-
-exports.studentProfile = async (req, res) => {
-    try {
-
-        const tutor = await Tutor.findOne({
-            user: req.session.user.id,
-        });
-
-        if (!tutor) {
-            return res.redirect("/");
-        }
-
-        const student = await Student.findOne({
-            _id: req.params.id,
-            assignedTutor: tutor._id,
-            isDeleted: false,
-        }).populate("assignedTutor");
-
-        if (!student) {
-            return res.status(404).render("pages/404");
-        }
-
-        res.render("tutor/student-profile", {
-            title: "Student Profile",
-            tutor,
-            student,
-            user: req.session.user,
-        });
-
-    } catch (err) {
-
-        console.log(err);
-
-        res.status(500).send("Server Error");
-    }
-};
+const bcrypt=require('bcryptjs');
+const Tutor=require('../models/TutorEnrollment');const Student=require('../models/StudentEnrollment');const Assignment=require('../models/Assignment');const Attendance=require('../models/Attendance');const StudyMaterial=require('../models/StudyMaterial');const Test=require('../models/Test');const Schedule=require('../models/Schedule');const Notification=require('../models/Notification');const Message=require('../models/Message');const Progress=require('../models/Progress');const User=require('../models/User');
+async function getTutor(req){return Tutor.findOne({user:req.session.user.id,isDeleted:{$ne:true}});}
+async function notify(student,title,message){const s=await Student.findById(student);if(s?.user)await Notification.create({user:s.user,title,message});}
+exports.dashboard=async(req,res)=>{try{const tutor=await getTutor(req);if(!tutor)return res.redirect('/');const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});const [assignments,attendance,materials,tests,schedules,progress,notifications]=await Promise.all([Assignment.find({tutor:tutor._id}).sort({createdAt:-1}),Attendance.find({tutor:tutor._id}).sort({date:-1}),StudyMaterial.find({tutor:tutor._id}).sort({createdAt:-1}),Test.find({tutor:tutor._id}).sort({testDate:1}),Schedule.find({tutor:tutor._id}).sort({createdAt:-1}),Progress.find({tutor:tutor._id}).sort({createdAt:-1}),Notification.find({user:req.session.user.id,read:false})]);res.render('dashboard/tutor-dashboard',{title:'Tutor Dashboard',tutor,students,assignments,attendance,materials,tests,schedules,progress,notifications,user:req.session.user});}catch(e){console.log(e);res.status(500).send('Server Error')}};
+exports.studentProfile=async(req,res)=>{try{const tutor=await getTutor(req);const student=await Student.findOne({_id:req.params.id,assignedTutor:tutor._id,isDeleted:{$ne:true}}).populate('assignedTutor');if(!student)return res.status(404).send('Student not found');const [attendance,assignments,tests,progress]=await Promise.all([Attendance.find({student:student._id}),Assignment.find({student:student._id,tutor:tutor._id}),Test.find({student:student._id,tutor:tutor._id}),Progress.find({student:student._id,tutor:tutor._id})]);res.render('tutor/student-profile',{title:'Student Profile',tutor,student,attendance,assignments,tests,progress,user:req.session.user});}catch(e){console.log(e);res.status(500).send('Server Error')}};
+exports.students=async(req,res)=>{const tutor=await getTutor(req);const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});res.render('dashboard/tutor-students',{title:'My Students',tutor,students,user:req.session.user});};
+exports.attendance=async(req,res)=>{const tutor=await getTutor(req);const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});const records=await Attendance.find({tutor:tutor._id}).populate('student').sort({date:-1});res.render('dashboard/tutor-attendance',{title:'Attendance',tutor,students,records,user:req.session.user});};
+exports.markAttendance=async(req,res)=>{const tutor=await getTutor(req);const student=await Student.findOne({_id:req.body.student,assignedTutor:tutor._id,isDeleted:{$ne:true}});if(!student)return res.status(403).send('Student not assigned');await Attendance.findOneAndUpdate({tutor:tutor._id,student:student._id,date:new Date(req.body.date)},{tutor:tutor._id,student:student._id,date:new Date(req.body.date),status:req.body.status,note:req.body.note},{upsert:true,new:true,setDefaultsOnInsert:true});await notify(student._id,'Attendance updated',`Attendance marked ${req.body.status} for ${student.studentName}.`);res.redirect('/tutor/attendance');};
+exports.assignments=async(req,res)=>{const tutor=await getTutor(req);const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});const assignments=await Assignment.find({tutor:tutor._id}).populate('student').sort({createdAt:-1});res.render('dashboard/tutor-assignments',{title:'Homework',tutor,students,assignments,user:req.session.user});};
+exports.createAssignment=async(req,res)=>{const tutor=await getTutor(req);const student=await Student.findOne({_id:req.body.student,assignedTutor:tutor._id,isDeleted:{$ne:true}});if(!student)return res.status(403).send('Student not assigned');const a=await Assignment.create({tutor:tutor._id,student:student._id,title:req.body.title,description:req.body.description,dueDate:req.body.dueDate});await notify(student._id,'New homework',`New homework: ${a.title}`);res.redirect('/tutor/homework');};
+exports.materials=async(req,res)=>{const tutor=await getTutor(req);const materials=await StudyMaterial.find({tutor:tutor._id}).sort({createdAt:-1});res.render('dashboard/tutor-materials',{title:'Study Materials',tutor,materials,user:req.session.user});};
+exports.addMaterial=async(req,res)=>{const tutor=await getTutor(req);const fileUrl=req.file?'/uploads/materials/'+req.file.filename:req.body.fileUrl;await StudyMaterial.create({tutor:tutor._id,title:req.body.title,description:req.body.description,fileUrl,originalName:req.file?.originalname||req.body.fileUrl});const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});for(const s of students)await notify(s._id,'New study material',`New material: ${req.body.title}`);res.redirect('/tutor/notes');};
+exports.tests=async(req,res)=>{const tutor=await getTutor(req);const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});const tests=await Test.find({tutor:tutor._id}).populate('student').sort({testDate:1});res.render('dashboard/tutor-tests',{title:'Tests',tutor,students,tests,user:req.session.user});};
+exports.createTest=async(req,res)=>{const tutor=await getTutor(req);const student=await Student.findOne({_id:req.body.student,assignedTutor:tutor._id,isDeleted:{$ne:true}});if(!student)return res.status(403).send('Student not assigned');await Test.create({tutor:tutor._id,student:student._id,title:req.body.title,description:req.body.description,testDate:req.body.testDate,maxMarks:req.body.maxMarks});await notify(student._id,'New test scheduled',`Test scheduled: ${req.body.title}`);res.redirect('/tutor/tests');};
+exports.gradeTest=async(req,res)=>{const tutor=await getTutor(req);await Test.findOneAndUpdate({_id:req.params.id,tutor:tutor._id},{marks:req.body.marks,feedback:req.body.feedback,status:'completed'});res.redirect('/tutor/tests');};
+exports.schedule=async(req,res)=>{const tutor=await getTutor(req);const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});const schedules=await Schedule.find({tutor:tutor._id}).populate('student').sort({createdAt:-1});res.render('dashboard/tutor-schedule',{title:'Schedule',tutor,students,schedules,user:req.session.user});};
+exports.createSchedule=async(req,res)=>{const tutor=await getTutor(req);const student=await Student.findOne({_id:req.body.student,assignedTutor:tutor._id,isDeleted:{$ne:true}});if(!student)return res.status(403).send('Student not assigned');await Schedule.create({tutor:tutor._id,student:student._id,day:req.body.day,startTime:req.body.startTime,endTime:req.body.endTime,subject:req.body.subject||student.subject,location:req.body.location,notes:req.body.notes});await notify(student._id,'Class scheduled',`${req.body.day} ${req.body.startTime}-${req.body.endTime}`);res.redirect('/tutor/schedule');};
+exports.progress=async(req,res)=>{const tutor=await getTutor(req);const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}});const progress=await Progress.find({tutor:tutor._id}).populate('student').sort({createdAt:-1});res.render('dashboard/tutor-progress',{title:'Student Progress',tutor,students,progress,user:req.session.user});};
+exports.addProgress=async(req,res)=>{const tutor=await getTutor(req);const student=await Student.findOne({_id:req.body.student,assignedTutor:tutor._id,isDeleted:{$ne:true}});if(!student)return res.status(403).send('Student not assigned');await Progress.create({tutor:tutor._id,student:student._id,topic:req.body.topic,score:req.body.score,remark:req.body.remark});await notify(student._id,'Progress updated',`Progress updated for ${req.body.topic||'your studies'}.`);res.redirect('/tutor/progress');};
+exports.profile=async(req,res)=>{const tutor=await getTutor(req);res.render('dashboard/tutor-profile',{title:'Tutor Profile',tutor,user:req.session.user});};
+exports.updateProfile=async(req,res)=>{const tutor=await getTutor(req);const fields=['name','gender','age','maritalStatus','qualification','preferredTime','jobLocation','experience','classesTeach','subjectExpertise','expectedSalary','otherSkills','personalVehicle','areaCover','address','permanentAddress','email','contactNumber'];fields.forEach(f=>{if(req.body[f]!==undefined)tutor[f]=req.body[f]});await tutor.save();await User.findByIdAndUpdate(req.session.user.id,{name:tutor.name,email:tutor.email});req.session.user.name=tutor.name;req.session.user.email=tutor.email;res.redirect('/tutor/profile');};
+exports.notifications=async(req,res)=>{const notifications=await Notification.find({user:req.session.user.id}).sort({createdAt:-1});await Notification.updateMany({user:req.session.user.id},{read:true});res.render('dashboard/notifications',{title:'Notifications',notifications,user:req.session.user});};
+exports.messages=async(req,res)=>{const tutor=await getTutor(req);const students=await Student.find({assignedTutor:tutor._id,isDeleted:{$ne:true}}).populate('user');const ids=students.map(s=>s.user?._id).filter(Boolean);const messages=await Message.find({$or:[{sender:req.session.user.id},{recipient:req.session.user.id},{sender:{$in:ids}},{recipient:{$in:ids}}]}).populate('sender recipient').sort({createdAt:1});res.render('dashboard/messages',{title:'Messages',messages,recipient:null,students,user:req.session.user});};
+exports.sendMessage=async(req,res)=>{const tutor=await getTutor(req);const student=await Student.findOne({_id:req.body.student,assignedTutor:tutor._id,isDeleted:{$ne:true}});if(student?.user&&req.body.body)await Message.create({sender:req.session.user.id,recipient:student.user,body:req.body.body});res.redirect('/tutor/messages');};
+exports.changePassword=async(req,res)=>{if(req.body.password!==req.body.confirmPassword)return res.status(400).send('Passwords do not match');const user=await User.findById(req.session.user.id);if(!(await bcrypt.compare(req.body.currentPassword,user.password)))return res.status(400).send('Current password is incorrect');user.password=await bcrypt.hash(req.body.password,10);await user.save();res.redirect('/tutor/profile');};
+module.exports.getTutor=getTutor;

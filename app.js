@@ -13,7 +13,6 @@ const { MongoStore } = require("connect-mongo");
 connectDB();
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
 
 app.use(
   express.urlencoded({
@@ -67,6 +66,7 @@ app.locals.site = {
 app.use("/", require("./routes/web"));
 app.use("/", mentorRoutes);
 app.use("/tutor", tutorRoutes);
+app.use("/student", require("./routes/student"));
 const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV !== "production") {

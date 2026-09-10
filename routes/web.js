@@ -22,11 +22,11 @@ router.get("/subjects", homeController.subjects);
 router.get("/results", homeController.results);
 
 router.get("/gallery", homeController.gallery);
-router.get("/enroll-student", isLoggedIn, homeController.studentEnrollmentPage);
+router.get("/enroll-student", isLoggedIn, isStudent, homeController.studentEnrollmentPage);
 
-router.post("/enroll-student", isLoggedIn, homeController.saveStudent);
+router.post("/enroll-student", isLoggedIn, isStudent, homeController.saveStudent);
 
-router.get("/enroll-tutor", homeController.tutorEnrollmentPage);
+router.get("/enroll-tutor", homeController.tutorEnrollmentPage);  
 
 router.post("/enroll-tutor", homeController.saveTutor);
 
@@ -78,13 +78,10 @@ router.get("/admin-dashboard", isLoggedIn, isAdmin, async (req, res) => {
 });
 
 router.get("/admin/students", isLoggedIn, authController.studentsPage);
-router.get(
-  "/student/dashboard",
-  isLoggedIn,
-  isStudent,
-  authController.dashboard,
-);
+router.get('/dashboard', authController.dashboard);
 router.get("/admin/tutors", isLoggedIn, authController.tutorsPage);
+router.get("/admin/tutor-change-requests", isLoggedIn, isAdmin, authController.tutorChangeRequests);
+router.post("/admin/tutor-change-requests/:id", isLoggedIn, isAdmin, authController.resolveTutorChangeRequest);
 router.get("/admin/messages", isLoggedIn, authController.messagesPage);
 
 router.post(
@@ -120,13 +117,6 @@ router.get("/admin/students/search", isAdmin, authController.searchStudents);
 router.get("/admin/tutors/search", isAdmin, authController.searchTutors);
 router.get("/admin/mentors/search", isAdmin, authController.searchMentors);
 router.get(
-  "/tutor/dashboard",
-  isLoggedIn,
-  isTutor,
-  authController.tutorDashboard,
-);
-
-router.get(
   "/admin/assign-tutor/:studentId",
   isLoggedIn,
   isAdmin,
@@ -153,11 +143,11 @@ router.post(
   isAdmin,
   authController.rejectTutor,
 );
-module.exports = router;
-
 router.post(
   "/admin/messages/:id/status",
   isLoggedIn,
   isAdmin,
   authController.updateMessageStatus,
 );
+
+module.exports = router;

@@ -1,0 +1,25 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">Study Materials</h1>
+                <form method="post" enctype="multipart/form-data" action="/tutor/notes"
+                    class="bg-white shadow rounded-xl p-6 grid gap-3 mb-8"><input name="title" required
+                        placeholder="Material title" class="border rounded p-3"><textarea name="description"
+                        placeholder="Description" class="border rounded p-3"></textarea><input type="file"
+                        name="material" class="border rounded p-3"><input name="fileUrl"
+                        placeholder="Or paste a file URL" class="border rounded p-3"><button
+                        class="bg-[#c9a15f] text-white py-3 rounded">Publish Material</button></form>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <% materials.forEach(m=>{ %><div class="bg-white shadow rounded-xl p-5"><b>
+                                <%=m.title%>
+                            </b>
+                            <p class="text-gray-500">
+                                <%=m.description||''%>
+                            </p>
+                            <% if(m.fileUrl){ %><a href="<%=m.fileUrl%>" target="_blank"
+                                    class="text-[#a27d3f] inline-block mt-3">Open →</a>
+                                <% } %>
+                        </div>
+                        <% }) %>
+                </div>
+                </section>
+            </main><%- include('../partials/footer') %>

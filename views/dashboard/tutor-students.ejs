@@ -1,0 +1,19 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+           <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">My Students</h1>
+                <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+                    <% students.forEach(s=>{ %><div class="bg-white shadow rounded-xl p-6">
+                            <h2 class="text-2xl font-semibold">
+                                <%=s.studentName%>
+                            </h2>
+                            <p>Class <%=s.class%> · <%=s.subject%>
+                            </p>
+                            <p class="text-gray-500 mt-2">
+                                <%=s.currentLocation%>
+                            </p><a href="/tutor/student/<%=s._id%>"
+                                class="inline-block mt-4 bg-[#c9a15f] text-white px-4 py-2 rounded">View Profile</a>
+                        </div>
+                        <% }) %>
+                </div>
+                </section>
+            </main><%- include('../partials/footer') %>

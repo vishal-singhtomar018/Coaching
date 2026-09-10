@@ -2,123 +2,119 @@
 <%- include('../partials/navbar') %>
 
 <section class="min-h-screen bg-[#f8f7f5] py-16">
+    <div class="max-w-6xl mx-auto px-6">
 
-    <div class="max-w-2xl mx-auto px-6">
-
-        <div class="bg-white shadow-xl rounded-lg border border-gray-200 p-10">
-
-            <div class="mb-8">
-
-                <h1 class="text-4xl font-serif text-gray-800">
-                    Assign Tutor
-                </h1>
-
-                <p class="text-gray-500 mt-2">
-                    Assign a tutor to the selected student.
-                </p>
-
-            </div>
-
-            <!-- Student Information -->
-
-            <div class="bg-gray-50 border rounded-lg p-6 mb-8">
-
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">
-                    Student Details
-                </h2>
-
-                <div class="space-y-3">
-
-                    <p>
-                        <span class="font-semibold">Student Name:</span>
-                        <%= student.studentName %>
-                    </p>
-
-                    <p>
-                        <span class="font-semibold">Class:</span>
-                        <%= student.class %>
-                    </p>
-
-                    <p>
-                        <span class="font-semibold">Subject:</span>
-                        <%= student.subject %>
-                    </p>
-
-                    <p>
-                        <span class="font-semibold">Parent:</span>
-                        <%= student.parentName %>
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- Assign Tutor Form -->
-
-            <form
-                action="/admin/assign-tutor/<%= student._id %>"
-                method="POST"
-                class="space-y-6">
-
-                <div>
-
-                    <label class="block text-lg font-medium mb-3">
-
-                        Select Tutor
-
-                    </label>
-
-                    <select
-                        name="tutor"
-                        required
-                        class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-[#c9a15f] focus:border-[#c9a15f] outline-none">
-
-                        <option value="">
-                            -- Select Tutor --
-                        </option>
-
-                        <% tutors.forEach(tutor => { %>
-
-                            <option value="<%= tutor._id %>">
-
-                                <%= tutor.fullName %> •
-                                <%= tutor.subject %> •
-                                <%= tutor.experience %>
-
-                            </option>
-
-                        <% }) %>
-
-                    </select>
-
-                </div>
-
-                <div class="flex gap-4">
-
-                    <button
-                        type="submit"
-                        class="bg-[#c9a15f] hover:bg-[#b88f4d] text-white px-8 py-4 rounded-lg transition duration-300">
-
-                        Assign Tutor
-
-                    </button>
-
-                    <a
-                        href="/admin/students"
-                        class="border border-gray-300 px-8 py-4 rounded-lg hover:bg-gray-100 transition">
-
-                        Cancel
-
-                    </a>
-
-                </div>
-
-            </form>
-
+        <div class="mb-10">
+            <h1 class="text-4xl md:text-5xl font-serif text-gray-800">Assign Tutor</h1>
+            <p class="text-gray-500 mt-2">The system recommends the best approved tutors. The admin makes the final assignment.</p>
         </div>
 
-    </div>
+        <div class="bg-white shadow-xl rounded-2xl border border-gray-200 p-8 mb-8">
+            <h2 class="text-2xl font-serif mb-6">Student Details</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div><p class="text-sm text-gray-400">Student</p><p class="font-semibold"><%= student.studentName %></p></div>
+                <div><p class="text-sm text-gray-400">Class</p><p class="font-semibold"><%= student.class %></p></div>
+                <div><p class="text-sm text-gray-400">Subject</p><p class="font-semibold"><%= student.subject %></p></div>
+                <div><p class="text-sm text-gray-400">Time</p><p class="font-semibold"><%= student.timeSlot || 'Not specified' %></p></div>
+                <div><p class="text-sm text-gray-400">Location</p><p class="font-semibold"><%= student.currentLocation || 'Not specified' %></p></div>
+                <div><p class="text-sm text-gray-400">Parent</p><p class="font-semibold"><%= student.parentName %></p></div>
+            </div>
+        </div>
 
+        <% if (!recommendations || recommendations.length === 0) { %>
+            <div class="bg-white rounded-2xl shadow p-10 text-center">
+                <i class="fa-solid fa-user-slash text-5xl text-[#c9a15f] mb-4"></i>
+                <h2 class="text-2xl font-serif">No Approved Tutors Available</h2>
+                <p class="text-gray-500 mt-2">Approve a tutor first, then return here to assign one.</p>
+            </div>
+        <% } else { %>
+            <div class="flex items-center justify-between mb-5">
+                <div>
+                    <h2 class="text-3xl font-serif">Top Tutor Recommendations</h2>
+                    <p class="text-gray-500 mt-1">Matches are scored by subject, class, area, time and capacity.</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6 mb-10">
+                <% recommendations.forEach((item, index) => { %>
+                    <div class="bg-white rounded-2xl shadow-lg border <%= index === 0 ? 'border-[#c9a15f] ring-2 ring-[#c9a15f]/20' : 'border-gray-200' %> p-7 relative">
+                        <% if (index === 0) { %>
+                            <span class="absolute top-4 right-4 text-xs font-semibold bg-[#c9a15f] text-white px-3 py-1 rounded-full">Best Match</span>
+                        <% } %>
+
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-full bg-[#c9a15f] text-white flex items-center justify-center text-xl font-bold">
+                                <%= item.tutor.name.charAt(0).toUpperCase() %>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold"><%= item.tutor.name %></h3>
+                                <p class="text-sm text-gray-500"><%= item.tutor.qualification || 'Tutor' %></p>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="font-medium">Match Score</span>
+                                <span class="font-bold text-[#c9a15f]"><%= item.score %>%</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-[#c9a15f]" style="width:<%= item.score %>%"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-sm mb-6">
+                            <p><strong>Subjects:</strong> <%= item.tutor.subjectExpertise || '—' %></p>
+                            <p><strong>Classes:</strong> <%= item.tutor.classesTeach || '—' %></p>
+                            <p><strong>Area:</strong> <%= item.tutor.areaCover || item.tutor.jobLocation || '—' %></p>
+                            <p><strong>Preferred Time:</strong> <%= item.tutor.preferredTime || '—' %></p>
+                            <p><strong>Students:</strong> <%= item.assignedCount %> / <%= item.maxStudents %></p>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <% item.reasons.forEach(reason => { %>
+                                <span class="text-xs bg-gray-100 px-3 py-1 rounded-full"><%= reason %> match</span>
+                            <% }) %>
+                        </div>
+
+                        <% if (item.available) { %>
+                            <form action="/admin/students/<%= student._id %>/assign-tutor" method="POST">
+                                <input type="hidden" name="tutorId" value="<%= item.tutor._id %>">
+                                <button type="submit" class="w-full bg-[#c9a15f] hover:bg-[#b88f4d] text-white py-3 rounded-lg transition">
+                                    Assign This Tutor
+                                </button>
+                            </form>
+                        <% } else { %>
+                            <button disabled class="w-full bg-gray-300 text-gray-600 py-3 rounded-lg cursor-not-allowed">
+                                Tutor At Capacity
+                            </button>
+                        <% } %>
+                    </div>
+                <% }) %>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow p-7">
+                <h2 class="text-2xl font-serif mb-5">All Approved Tutors</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <% tutors.forEach(item => { %>
+                        <form action="/admin/students/<%= student._id %>/assign-tutor" method="POST" class="border rounded-xl p-4 flex items-center justify-between gap-4">
+                            <input type="hidden" name="tutorId" value="<%= item.tutor._id %>">
+                            <div>
+                                <p class="font-semibold"><%= item.tutor.name %> <span class="text-[#c9a15f]">(<%= item.score %>%)</span></p>
+                                <p class="text-sm text-gray-500"><%= item.tutor.subjectExpertise || 'No subject specified' %> · <%= item.assignedCount %>/<%= item.maxStudents %> students</p>
+                            </div>
+                            <button type="submit" <%= !item.available ? 'disabled' : '' %> class="px-4 py-2 rounded-lg <%= item.available ? 'bg-black text-white hover:bg-[#c9a15f]' : 'bg-gray-200 text-gray-500 cursor-not-allowed' %>">
+                                Assign
+                            </button>
+                        </form>
+                    <% }) %>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="mt-8">
+            <a href="/admin/students" class="border border-gray-300 px-6 py-3 rounded-lg hover:bg-white transition">← Back to Students</a>
+        </div>
+    </div>
 </section>
 
 <%- include('../partials/footer') %>

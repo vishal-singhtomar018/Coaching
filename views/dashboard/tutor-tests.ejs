@@ -1,0 +1,44 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">Tests</h1>
+                <form method="post" action="/tutor/tests"
+                    class="bg-white shadow rounded-xl p-6 grid md:grid-cols-2 gap-3 mb-8"><select name="student"
+                        required class="border rounded p-3">
+                        <option value="">Student</option>
+                        <% students.forEach(s=>{ %><option value="<%=s._id%>">
+                                <%=s.studentName%>
+                            </option>
+                            <% }) %>
+                    </select><input name="title" required placeholder="Test title" class="border rounded p-3"><input
+                        name="testDate" type="datetime-local" class="border rounded p-3"><input name="maxMarks"
+                        type="number" value="100" class="border rounded p-3"><textarea name="description"
+                        placeholder="Instructions" class="border rounded p-3 md:col-span-2"></textarea><button
+                        class="bg-[#c9a15f] text-white py-3 rounded md:col-span-2">Schedule Test</button></form>
+                <div class="grid gap-4">
+                    <% tests.forEach(t=>{ %><div class="bg-white shadow rounded-xl p-5">
+                            <div class="flex justify-between"><b>
+                                    <%=t.title%> — <%=t.student?.studentName%>
+                                </b><span>
+                                    <%=t.status%>
+                                </span></div>
+                            <p>Date: <%=t.testDate?t.testDate.toLocaleString():'—'%> · Max <%=t.maxMarks%>
+                            </p>
+                            <% if(t.status!=='completed' ){ %>
+                                <form method="post" action="/tutor/tests/<%=t._id%>/grade"
+                                    class="grid md:grid-cols-3 gap-2 mt-3"><input name="marks" type="number" min="0"
+                                        max="<%=t.maxMarks%>" required placeholder="Marks"
+                                        class="border rounded p-2"><input name="feedback" placeholder="Feedback"
+                                        class="border rounded p-2 md:col-span-2"><button
+                                        class="bg-black text-white rounded p-2 md:col-span-3">Save Result</button>
+                                </form>
+                                <% } else { %>
+                                    <p class="mt-2">Score: <b>
+                                            <%=t.marks%>/<%=t.maxMarks%>
+                                        </b> · <%=t.feedback||''%>
+                                    </p>
+                                    <% } %>
+                        </div>
+                        <% }) %>
+                </div>
+                </section>
+            </main><%- include('../partials/footer') %>

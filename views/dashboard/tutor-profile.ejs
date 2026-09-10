@@ -1,0 +1,24 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">Tutor Profile</h1>
+                <form method="post" action="/tutor/profile"
+                    class="bg-white shadow rounded-xl p-7 grid md:grid-cols-2 gap-4">
+                    <%
+                        ['name','gender','age','maritalStatus','qualification','preferredTime','jobLocation','experience','classesTeach','subjectExpertise','expectedSalary','otherSkills','personalVehicle','areaCover','address','permanentAddress','email','contactNumber'].forEach(f=>
+                        { %><label><span class="text-sm text-gray-500">
+                                <%=f%>
+                            </span><input name="<%=f%>" value="<%=tutor[f]||''%>"
+                                class="w-full border rounded p-3"></label>
+                        <% }) %><button class="md:col-span-2 bg-[#c9a15f] text-white py-3 rounded">Save Profile</button>
+                </form>
+                <form method="post" action="/tutor/change-password" class="bg-white shadow rounded-xl p-7 mt-6">
+                    <h2 class="font-serif text-2xl mb-4">Change Password</h2>
+                    <div class="grid md:grid-cols-3 gap-3"><input type="password" name="currentPassword" required
+                            placeholder="Current password" class="border rounded p-3"><input type="password"
+                            name="password" required minlength="6" placeholder="New password"
+                            class="border rounded p-3"><input type="password" name="confirmPassword" required
+                            placeholder="Confirm password" class="border rounded p-3"></div><button
+                        class="mt-4 bg-black text-white px-5 py-3 rounded">Change Password</button>
+                </form>
+            </section>
+            </main><%- include('../partials/footer') %>

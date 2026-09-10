@@ -70,6 +70,13 @@ const tutorEnrollmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+
+  // Optional maximum number of active students this tutor can handle.
+  maxStudents: {
+    type: Number,
+    default: 10,
+    min: 1,
+  },
 });
 
 module.exports = mongoose.model("TutorEnrollment", tutorEnrollmentSchema);

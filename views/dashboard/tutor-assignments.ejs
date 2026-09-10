@@ -1,0 +1,39 @@
+<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
+            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
+                <h1 class="font-serif text-4xl mb-8">Homework</h1>
+                <form method="post" action="/tutor/homework"
+                    class="bg-white shadow rounded-xl p-6 grid md:grid-cols-2 gap-3 mb-8"><select name="student"
+                        required class="border rounded p-3">
+                        <option value="">Select student</option>
+                        <% students.forEach(s=>{ %><option value="<%=s._id%>">
+                                <%=s.studentName%>
+                            </option>
+                            <% }) %>
+                    </select><input name="title" required placeholder="Homework title"
+                        class="border rounded p-3"><textarea name="description" placeholder="Description"
+                        class="border rounded p-3 md:col-span-2"></textarea><input type="date" name="dueDate"
+                        class="border rounded p-3"><button
+                        class="bg-[#c9a15f] text-white py-3 rounded md:col-span-2">Assign Homework</button></form>
+                <div class="grid gap-4">
+                    <% assignments.forEach(a=>{ %><div class="bg-white shadow rounded-xl p-5">
+                            <div class="flex justify-between"><b>
+                                    <%=a.title%>
+                                </b><span>
+                                    <%=a.status%>
+                                </span></div>
+                            <p>
+                                <%=a.student?.studentName%> · Due <%=a.dueDate?a.dueDate.toLocaleDateString():'—'%>
+                            </p>
+                            <p class="text-gray-600 mt-2">
+                                <%=a.description||''%>
+                            </p>
+                            <% if(a.submission){ %>
+                                <div class="mt-3 bg-gray-50 p-3"><b>Submission:</b>
+                                    <%=a.submission%>
+                                </div>
+                                <% } %>
+                        </div>
+                        <% }) %>
+                </div>
+                </section>
+            </main><%- include('../partials/footer') %>
