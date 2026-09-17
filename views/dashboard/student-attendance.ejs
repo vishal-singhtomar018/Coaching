@@ -1,1 +1,34 @@
-<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %><main class="max-w-6xl mx-auto px-6 py-12"><h1 class="font-serif text-4xl mb-8">Attendance</h1><div class="bg-white shadow rounded-xl overflow-hidden"><table class="w-full"><thead class="bg-gray-50"><tr><th class="p-4 text-left">Date</th><th class="p-4 text-left">Status</th><th class="p-4 text-left">Note</th></tr></thead><tbody><% attendance.forEach(a=>{ %><tr class="border-t"><td class="p-4"><%=a.date.toLocaleDateString()%></td><td class="p-4 capitalize"><%=a.status%></td><td class="p-4"><%=a.note||'—'%></td></tr><% }) %></tbody></table></div></main><%- include('../partials/footer') %>
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/dashboard-nav') %>
+
+<main class="max-w-6xl mx-auto px-6 py-12">
+    <h1 class="font-serif text-4xl mb-2">Attendance</h1>
+    <p class="text-gray-500 mb-8">Your daily attendance history.</p>
+
+    <div class="bg-white shadow rounded-xl overflow-hidden">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="p-4 text-left">Date</th>
+                    <th class="p-4 text-left">Status</th>
+                    <th class="p-4 text-left">Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% attendance.forEach(a=>{ %>
+                    <tr class="border-t">
+                        <td class="p-4"><%= a.date.toLocaleDateString() %></td>
+                        <td class="p-4 capitalize font-medium <%= a.status === 'present' ? 'text-green-700' : 'text-red-700' %>"><%= a.status %></td>
+                        <td class="p-4"><%= a.note || '—' %></td>
+                    </tr>
+                <% }) %>
+                <% if (!attendance.length) { %>
+                    <tr><td colspan="3" class="p-6 text-center text-gray-500">No attendance has been recorded yet.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<%- include('../partials/footer') %>

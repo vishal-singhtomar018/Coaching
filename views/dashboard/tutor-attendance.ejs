@@ -1,45 +1,134 @@
-<%- include('../partials/head') %><%- include('../partials/navbar') %><%- include('../partials/dashboard-nav') %>
-            <section class="max-w-7xl mx-auto px-6 py-16 min-h-[calc(100vh-80px)]">
-                <h1 class="font-serif text-4xl mb-8">Mark Attendance</h1>
-                <form method="post" action="/tutor/attendance"
-                    class="bg-white shadow rounded-xl p-6 grid md:grid-cols-4 gap-3 mb-8"><select name="student"
-                        required class="border rounded p-3">
-                        <option value="">Student</option>
-                        <% students.forEach(s=>{ %><option value="<%=s._id%>">
-                                <%=s.studentName%>
-                            </option>
-                            <% }) %>
-                    </select><input type="date" name="date" required class="border rounded p-3"><select name="status"
-                        class="border rounded p-3">
-                        <option>present</option>
-                        <option>absent</option>
-                        <option>late</option>
-                    </select><input name="note" placeholder="Note" class="border rounded p-3"><button
-                        class="md:col-span-4 bg-[#c9a15f] text-white py-3 rounded">Save Attendance</button></form>
-                <div class="bg-white shadow rounded-xl overflow-auto">
-                    <table class="w-full">
-                        <tr class="bg-gray-50">
-                            <th class="p-3 text-left">Student</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Note</th>
+<%- include('../partials/head') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/dashboard-nav') %>
+
+<section class="max-w-7xl mx-auto px-6 py-12 min-h-[calc(100vh-80px)]">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+        <div>
+            <h1 class="font-serif text-4xl">Daily Attendance</h1>
+            <p class="text-gray-500 mt-2">Mark attendance for all your assigned students in one sheet.</p>
+        </div>
+        <form method="get" action="/tutor/attendance" class="flex items-end gap-3">
+            <div>
+                <label for="attendanceDate" class="block text-sm text-gray-500 mb-1">Attendance date</label>
+                <input id="attendanceDate" type="date" name="date" value="<%= selectedDate %>" required class="border rounded-lg p-3 bg-white">
+            </div>
+            <button class="bg-gray-900 text-white px-5 py-3 rounded-lg">Load Date</button>
+        </form>
+    </div>
+
+    <% if (!students.length) { %>
+        <div class="bg-white shadow rounded-xl p-8 text-center text-gray-500">
+            No students are currently assigned to you.
+        </div>
+    <% } else { %>
+        <form method="post" action="/tutor/attendance" class="bg-white shadow rounded-xl overflow-hidden">
+            <input type="hidden" name="date" value="<%= selectedDate %>">
+
+            <div class="p-5 border-b flex flex-col md:flex-row md:items-center md:justify-between gap-3 bg-gray-50">
+                <div>
+                    <h2 class="font-semibold text-lg">Attendance for <%= new Date(selectedDate + 'T00:00:00').toLocaleDateString() %></h2>
+                    <p class="text-sm text-gray-500"><%= students.length %> assigned student<%= students.length === 1 ? '' : 's' %></p>
+                </div>
+                <button type="button" id="selectAllPresent" class="border border-[#c9a15f] text-[#8f6e37] px-4 py-2 rounded-lg hover:bg-yellow-50 transition">
+                    Mark All Present
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px]">
+                    <thead class="bg-white border-b">
+                        <tr>
+                            <th class="p-4 text-left">#</th>
+                            <th class="p-4 text-left">Student Name</th>
+                            <th class="p-4 text-center">Present</th>
+                            <th class="p-4 text-center">Absent</th>
+                            <th class="p-4 text-left">Note (optional)</th>
                         </tr>
-                        <% records.forEach(r=>{ %><tr class="border-t">
-                                <td class="p-3">
-                                    <%=r.student?.studentName%>
+                    </thead>
+                    <tbody>
+                        <% students.forEach((student, index) => { const id = String(student._id); const savedStatus = statusMap[id] || ''; %>
+                            <tr class="border-b last:border-b-0 hover:bg-gray-50">
+                                <td class="p-4 text-gray-500"><%= index + 1 %></td>
+                                <td class="p-4 font-medium"><%= student.studentName %></td>
+                                <td class="p-4 text-center">
+                                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="status[<%= id %>]" value="present" <%= savedStatus === 'present' ? 'checked' : '' %> required class="attendance-radio present-radio w-5 h-5">
+                                        <span>Present</span>
+                                    </label>
                                 </td>
-                                <td>
-                                    <%=r.date.toLocaleDateString()%>
+                                <td class="p-4 text-center">
+                                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="status[<%= id %>]" value="absent" <%= savedStatus === 'absent' ? 'checked' : '' %> required class="attendance-radio w-5 h-5">
+                                        <span>Absent</span>
+                                    </label>
                                 </td>
-                                <td>
-                                    <%=r.status%>
-                                </td>
-                                <td>
-                                    <%=r.note||''%>
+                                <td class="p-4">
+                                    <input type="text" name="note[<%= id %>]" value="<%= noteMap[id] || '' %>" placeholder="Optional note" class="border rounded-lg p-2 w-full">
                                 </td>
                             </tr>
-                            <% }) %>
-                    </table>
-                </div>
-            </section>
-            </main><%- include('../partials/footer') %>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-5 border-t bg-gray-50 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <p class="text-sm text-gray-500">
+                    <% if (currentRecord) { %>
+                        Attendance for this date is already saved. Saving again will update that date instead of creating a duplicate.
+                    <% } else { %>
+                        This will create a new attendance record for <%= selectedDate %>.
+                    <% } %>
+                </p>
+                <button type="submit" class="bg-[#c9a15f] text-white px-8 py-3 rounded-lg hover:opacity-90 transition">
+                    <%= currentRecord ? 'Update Attendance' : 'Save Attendance' %>
+                </button>
+            </div>
+        </form>
+    <% } %>
+
+    <div class="bg-white shadow rounded-xl overflow-hidden mt-8">
+        <div class="p-5 border-b">
+            <h2 class="font-serif text-2xl">Recent Attendance Sheets</h2>
+            <p class="text-sm text-gray-500 mt-1">One record is maintained for each tutor and calendar date.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[650px]">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-4 text-left">Date</th>
+                        <th class="p-4 text-left">Students</th>
+                        <th class="p-4 text-left">Present</th>
+                        <th class="p-4 text-left">Absent</th>
+                        <th class="p-4 text-left">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% records.forEach(record => { const sheetStudents = Array.isArray(record.students) ? record.students : []; const present = sheetStudents.filter(s => s.status === 'present').length; const absent = sheetStudents.filter(s => s.status === 'absent').length; const dateValue = record.date.toISOString().slice(0,10); %>
+                        <tr class="border-t">
+                            <td class="p-4"><%= record.date.toLocaleDateString() %></td>
+                            <td class="p-4"><%= sheetStudents.length %></td>
+                            <td class="p-4 text-green-700"><%= present %></td>
+                            <td class="p-4 text-red-700"><%= absent %></td>
+                            <td class="p-4"><a href="/tutor/attendance?date=<%= dateValue %>" class="text-[#8f6e37] hover:underline">View / Edit</a></td>
+                        </tr>
+                    <% }) %>
+                    <% if (!records.length) { %>
+                        <tr><td colspan="5" class="p-6 text-center text-gray-500">No attendance sheets saved yet.</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.getElementById('selectAllPresent')?.addEventListener('click', function () {
+        document.querySelectorAll('.present-radio').forEach(function (radio) {
+            radio.checked = true;
+        });
+    });
+</script>
+
+</main>
+<%- include('../partials/footer') %>
